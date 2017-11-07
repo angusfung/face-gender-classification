@@ -9,7 +9,7 @@ parser.add_argument("--download", action = "store_true",
 
 args = parser.parse_args()
 
-logger = logging.getLogger('classification')
+logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 logger.propagate = False
 
