@@ -1,4 +1,5 @@
 import urllib
+import os
 
 def timeout(func, args=(), kwargs={}, timeout_duration=1, default=None):
     '''From:
@@ -36,7 +37,7 @@ def rgb2gray(rgb):
     gray = 0.2989 * r + 0.5870 * g + 0.1140 * b
 
     return gray/255.
-    
+        
 def get_crop_pictures(filename, act):
     
     for a in act:
@@ -46,14 +47,13 @@ def get_crop_pictures(filename, act):
             if a in line:
                 filename = name + str(i) + '.' + line.split()[4].split('.')[-1]
                 # timeout is used to stop downloading images which take too long to download
-                timeout(testfile.retrieve, (line.split()[4], "uncropped/" + filename), {}, 30)
+                timeout(testfile.retrieve, (line.split()[4], "dataset/uncropped/" + filename), {}, 30)
                                 
-                #don't increment if no picture was retrieved (?)
-                if not os.path.isfile("uncropped/"+filename):
+                # check if picture was copied
+                if not os.path.isfile("dataset/uncropped/" + filename):
                     continue
-    
                 
-                print filename
+                logger.debug("Copied {}".format(filename))
                 i += 1
                 
                 #retrieve bounded box coordinates
@@ -63,40 +63,40 @@ def get_crop_pictures(filename, act):
                 y2 = int(line.split()[5].split(",")[3])
             
     
-                try: 
-                    im = imread("uncropped/" + filename)
-                except: #picture is corrupted, need to overwrite the picture.
-                        #decrement the counter i.
-                    i -= 1
-                    continue
-                
-                #some pictures are already grey-scale, or are already 2D 
-                
-                try: 
-                    im = im[y1:y2, x1:x2, :] #3D
-                except:
-                    im = im[y1:y2, x1:x2] #2D, don't need grey-scale
-                    
-                    #saving a blank picture that has no pixels, cannot be resized.
-                    try:
-                        im = imresize(im, (32,32)) #add 3
-                        imsave("cropped/" + filename, im)
-                    except:
-                            #picture is blank, need to overwrite the picture.
-                            #decrement the counter i.
-                            i -= 1
-                            continue
-                    continue
-                
-                #saving a blank picture that has no pixels, cannot be resized.
-                try:
-                    im = rgb2gray(im)
-                    im = imresize(im, (32,32)) #add 3
-                    imsave("cropped/" + filename, im)
-                    
-                except:
-                        #picture is blank, need to overwrite the picture.
-                        #decrement the counter i.
-                        i -= 1
-                        continue
+                # try: 
+                #     im = imread("uncropped/" + filename)
+                # except: #picture is corrupted, need to overwrite the picture.
+                #         #decrement the counter i.
+                #     i -= 1
+                #     continue
+                # 
+                # #some pictures are already grey-scale, or are already 2D 
+                # 
+                # try: 
+                #     im = im[y1:y2, x1:x2, :] #3D
+                # except:
+                #     im = im[y1:y2, x1:x2] #2D, don't need grey-scale
+                #     
+                #     #saving a blank picture that has no pixels, cannot be resized.
+                #     try:
+                #         im = imresize(im, (32,32)) #add 3
+                #         imsave("cropped/" + filename, im)
+                #     except:
+                #             #picture is blank, need to overwrite the picture.
+                #             #decrement the counter i.
+                #             i -= 1
+                #             continue
+                #     continue
+                # 
+                # #saving a blank picture that has no pixels, cannot be resized.
+                # try:
+                #     im = rgb2gray(im)
+                #     im = imresize(im, (32,32)) #add 3
+                #     imsave("cropped/" + filename, im)
+                #     
+                # except:
+                #         #picture is blank, need to overwrite the picture.
+                #         #decrement the counter i.
+                #         i -= 1
+                #         continue
     return
