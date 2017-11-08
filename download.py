@@ -26,35 +26,28 @@ def timeout(func, args=(), kwargs={}, timeout_duration=1, default=None):
 testfile = urllib.URLopener()
 
 def rgb2gray(rgb):
-    #Return the grayscale version of the RGB image rgb as a 2D numpy array
-    #whose range is 0..1
-    #Arguments:
-    #rgb -- an RGB image, represented as a numpy array of size n x m x 3. The
-    #range of the values is 0..255
-    
+    '''Return the grayscale version of the RGB image rgb as a 2D numpy array
+    whose range is 0..1
+    Arguments:
+    rgb -- an RGB image, represented as a numpy array of size n x m x 3. The
+    range of the values is 0..255'''
     
     r, g, b = rgb[:,:,0], rgb[:,:,1], rgb[:,:,2]
     gray = 0.2989 * r + 0.5870 * g + 0.1140 * b
 
     return gray/255.
     
-def get_crop_pictures(filename,act):
+def get_crop_pictures(filename, act):
     
     for a in act:
         name = a.split()[1].lower()
         i = 0
         for line in open(filename):
             if a in line:
-                filename = name+str(i)+'.'+line.split()[4].split('.')[-1]
-                #A version without timeout (uncomment in case you need to 
-                #unsupress exceptions, which timeout() does)
-                #testfile.retrieve(line.split()[4], "uncropped/"+filename)
-                #timeout is used to stop downloading images which take too long to download
+                filename = name + str(i) + '.' + line.split()[4].split('.')[-1]
+                # timeout is used to stop downloading images which take too long to download
                 timeout(testfile.retrieve, (line.split()[4], "uncropped/"+filename), {}, 30)
-                
-                #uncropped1= picture sourced from website -> effectively "uncropped"
-                #cropped2 = the actual cropped image -> effectively "cropped"
-                
+                                
                 #don't increment if no picture was retrieved (?)
                 if not os.path.isfile("uncropped/"+filename):
                     continue
