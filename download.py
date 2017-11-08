@@ -46,7 +46,7 @@ def get_crop_pictures(filename, act):
             if a in line:
                 filename = name + str(i) + '.' + line.split()[4].split('.')[-1]
                 # timeout is used to stop downloading images which take too long to download
-                timeout(testfile.retrieve, (line.split()[4], "uncropped/"+filename), {}, 30)
+                timeout(testfile.retrieve, (line.split()[4], "uncropped/" + filename), {}, 30)
                                 
                 #don't increment if no picture was retrieved (?)
                 if not os.path.isfile("uncropped/"+filename):
