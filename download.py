@@ -1,5 +1,8 @@
 import urllib
 import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 def timeout(func, args=(), kwargs={}, timeout_duration=1, default=None):
     '''From:
@@ -53,7 +56,7 @@ def get_crop_pictures(filename, act):
                 if not os.path.isfile("dataset/uncropped/" + filename):
                     continue
                 
-                logger.debug("Copied {}".format(filename))
+                logger.info("Copied {}".format(filename))
                 i += 1
                 
                 #retrieve bounded box coordinates

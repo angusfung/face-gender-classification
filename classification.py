@@ -11,25 +11,30 @@ parser.add_argument("--download", action = "store_true",
 
 args = parser.parse_args()
 
+# set root logger
+root = logging.getLogger()
+root.setLevel(logging.DEBUG)
+
+# set module logger
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-#logger.propagate = False
 
-logger_format = logging.Formatter('%(levelname)s: %(message)s')
+# use name to keep track of task
+logger_format = logging.Formatter('%(name)s - %(levelname)s: %(message)s')
 
 # add file handler
-def add_handler(name):
+def add_fh(name):
     fh = logging.FileHandler('{}.log'.format(name))
     fh.setLevel(logging.DEBUG)
     fh.setFormatter(logger_format)
-    logger.addHandler(fh)
+    root.addHandler(fh)
 
-# add steam handler to std output (log only INFO or above to std out)
-# could alternatively log stderr
+# add console handler to root logger (log INFO or above to terminal)
+# for general usage can set to WARN
 logger_stdout = logging.StreamHandler()
 logger_stdout.setLevel(logging.INFO)
 logger_stdout.setFormatter(logger_format)
-logger.addHandler(logger_stdout)
+root.addHandler(logger_stdout)
 
 
 def main():
