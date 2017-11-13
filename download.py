@@ -1,6 +1,9 @@
 import urllib
 import os
 import logging
+from scipy.misc import imread
+from scipy.misc import imresize
+from pylab import imsave
 
 logger = logging.getLogger(__name__)
 
@@ -55,32 +58,40 @@ def get_crop_pictures(filename, act):
                 # check if picture was copied
                 if not os.path.isfile("dataset/uncropped/" + filename):
                     continue
+            
+                # check if image is valid
+                try:
+                    im = imread("dataset/uncropped/" + filename)
+                    
+                except IOError:
+                    logger.info("Image from {} is corrupted".format(line.split()[4]))
+                    continue
+    
+                logger.info("Copied {}".format(filename))   
                 
-                logger.info("Copied {}".format(filename))
-                i += 1
-                
-                #retrieve bounded box coordinates
+                # retrieve bounded box coordinates
                 x1 = int(line.split()[5].split(",")[0])
                 y1 = int(line.split()[5].split(",")[1])
                 x2 = int(line.split()[5].split(",")[2])
                 y2 = int(line.split()[5].split(",")[3])
-            
-    
-                # try: 
-                #     im = imread("uncropped/" + filename)
-                # except: #picture is corrupted, need to overwrite the picture.
-                #         #decrement the counter i.
-                #     i -= 1
-                #     continue
-                # 
-                # #some pictures are already grey-scale, or are already 2D 
-                # 
-                # try: 
-                #     im = im[y1:y2, x1:x2, :] #3D
-                # except:
-                #     im = im[y1:y2, x1:x2] #2D, don't need grey-scale
-                #     
-                #     #saving a blank picture that has no pixels, cannot be resized.
+                 
+                # check if pictures are already gray-scale (2D)
+                
+                try:
+                    im = im[y1:y2, x1:x2, :]
+                
+                except IndexError:
+                    logger.info("Image from {} is already gray-scaled".format(line.split()[4]))
+                    im = im[y1:y2, x1:x2]
+                    
+                # check if picture is blank (has pixels)
+                try:     
+                    im = imresize(im, (32,32)) 
+                except IOError:
+                    logger.info("Image from {} is blank".format(line.split()[4]))
+                    continue
+                #imsave("dataset/cropped/" + filename, im)
+
                 #     try:
                 #         im = imresize(im, (32,32)) #add 3
                 #         imsave("cropped/" + filename, im)
@@ -102,4 +113,7 @@ def get_crop_pictures(filename, act):
                 #         #decrement the counter i.
                 #         i -= 1
                 #         continue
+                
+                # increment
+                i += 1
     return
