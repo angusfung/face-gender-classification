@@ -8,12 +8,14 @@ import shutil
 parser = argparse.ArgumentParser(description='Choose Part')
 parser.add_argument("--download", action = "store_true",
     help="Download FaceScrub dataset")
+parser.add_argument"("--
 
 args = parser.parse_args()
 
 # set root logger
 root = logging.getLogger()
-root.setLevel(logging.DEBUG)
+log_level = getattr(logging, loglevel.upper())
+root.setLevel(log_level)
 
 # set module logger
 logger = logging.getLogger(__name__)
@@ -24,7 +26,7 @@ logger_format = logging.Formatter('%(name)s - %(levelname)s: %(message)s')
 
 # add file handler
 def add_fh(name):
-    fh = logging.FileHandler('{}.log'.format(name))
+    fh = logging.FileHandler('logs/{}.log'.format(name))
     fh.setLevel(logging.DEBUG)
     fh.setFormatter(logger_format)
     root.addHandler(fh)
