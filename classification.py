@@ -6,15 +6,20 @@ import os
 import shutil
 
 parser = argparse.ArgumentParser(description='Choose Part')
-parser.add_argument("--download", action = "store_true",
+parser.add_argument(
+    '-d', '--download', 
+    action='store_true',
     help="Download FaceScrub dataset")
-parser.add_argument"("--
-
+parser.add_argument(
+    '-l', '--log-level',
+    choices=['ERROR', 'WARNING', 'INFO', 'DEBUG'],
+    default='DEBUG',
+    help="set logging level (default: %(default)s)")
 args = parser.parse_args()
 
 # set root logger
 root = logging.getLogger()
-log_level = getattr(logging, loglevel.upper())
+log_level = getattr(logging, args.log_level)
 root.setLevel(log_level)
 
 # set module logger
