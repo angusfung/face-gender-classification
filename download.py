@@ -52,23 +52,20 @@ def get_crop_pictures(filename, act):
         for line in open(filename):
             if a in line:
                 filename = name + str(i) + '.' + line.split()[4].split('.')[-1]
-                logger.info(filename)
                 # timeout is used to stop downloading images which take too long to download
                 timeout(testfile.retrieve, (line.split()[4], "dataset/uncropped/" + filename), {}, 30)
                                 
                 # check if picture was copied
                 if not os.path.isfile("dataset/uncropped/" + filename):
                     continue
-            
+                    
+                url = line.split()[4]
                 # check if image is valid
                 try:
                     im = imread("dataset/uncropped/" + filename)
-                    
                 except IOError:
-                    logger.info("Image from {} is corrupted".format(line.split()[4]))
+                    logger.warn("Image from {} is corrupted".format(url))
                     continue
-    
-                logger.info("Copied {}".format(filename))   
                 
                 # retrieve bounded box coordinates
                 x1 = int(line.split()[5].split(",")[0])
@@ -82,15 +79,17 @@ def get_crop_pictures(filename, act):
                     im = im[y1:y2, x1:x2, :]
                 
                 except IndexError:
-                    logger.info("Image from {} is already gray-scaled".format(line.split()[4]))
+                    logger.info("Image from {} is already gray-scaled".format(url))
                     im = im[y1:y2, x1:x2]
                     
                 # check if picture is blank (has pixels)
                 try:     
                     im = imresize(im, (32,32)) 
                 except IOError:
-                    logger.info("Image from {} is blank".format(line.split()[4]))
+                    logger.warn"Image from {} is blank".format(url))
                     continue
+                    
+                logger.info("Copied {} from {}".format(filename, url))   
                 #imsave("dataset/cropped/" + filename, im)
 
                 #     try:
@@ -117,4 +116,5 @@ def get_crop_pictures(filename, act):
                 
                 # increment
                 i += 1
+
     return
