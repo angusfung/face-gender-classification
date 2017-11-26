@@ -66,13 +66,14 @@ def get_crop_pictures(filename, act):
                 except IOError:
                     logger.warn("Image from {} is corrupted".format(url))
                     continue
+                    
                 
                 # retrieve bounded box coordinates
                 x1 = int(line.split()[5].split(",")[0])
                 y1 = int(line.split()[5].split(",")[1])
                 x2 = int(line.split()[5].split(",")[2])
                 y2 = int(line.split()[5].split(",")[3])
-                 
+                
                 # check if pictures are already gray-scale (2D)
                 
                 try:
@@ -86,10 +87,14 @@ def get_crop_pictures(filename, act):
                 try:     
                     im = imresize(im, (32,32)) 
                 except IOError:
-                    logger.warn"Image from {} is blank".format(url))
+                    logger.warn("Image from {} is blank".format(url))
                     continue
+                # except ValueError:  
+                #     logger.warn("There is no image on {}".format(url)) 
+                #     continue
                     
                 logger.info("Copied {} from {}".format(filename, url))   
+                    
                 #imsave("dataset/cropped/" + filename, im)
 
                 #     try:
