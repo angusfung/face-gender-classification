@@ -80,10 +80,20 @@ def get_crop_pictures(filename, act):
                     im = im[y1:y2, x1:x2, :]
                 
                 except IndexError:
-                    logger.info("Image from {} is already gray-scaled".format(url))
-                    im = im[y1:y2, x1:x2]
+                    try:
+                        im = im[y1:y2, x1:x2]
+                    except IndexError:
+                        # catching valid images as well... such as test 1
+                        logger.warn("Image from {} either does not exist ".format(url))
+                        print(y1, y2, x1, x2)
+                        continue
+                    else:
+                        logger.info("Image from {} is already gray-scaled".format(url))
+                        logger.info("Copied {} from {}".format(filename, url))   
+                        i += 1
+                        continue
                     
-                # check if picture is blank (has pixels)
+                # check if picture is blank (has no pixels)
                 try:     
                     im = imresize(im, (32,32)) 
                 except IOError:
