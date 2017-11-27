@@ -1,6 +1,8 @@
 import urllib
 import os
 import logging
+# this line is crucial to fix imread as PIL is not being maintained anymore
+import PIL as pillow
 from scipy.misc import imread
 from scipy.misc import imresize
 from pylab import imsave
