@@ -13,14 +13,13 @@ parser.add_argument(
 parser.add_argument(
     '-l', '--log-level',
     choices=['ERROR', 'WARNING', 'INFO', 'DEBUG'],
-    default='DEBUG',
+    default='WARNING',
     help="set logging level (default: %(default)s)")
 args = parser.parse_args()
 
 # set root logger
 root = logging.getLogger()
-log_level = getattr(logging, args.log_level)
-root.setLevel(log_level)
+root.setLevel(logging.DEBUG)
 
 # set module logger
 logger = logging.getLogger(__name__)
@@ -31,6 +30,13 @@ logger_format = logging.Formatter('%(name)s - %(levelname)s: %(message)s')
 
 # add file handler
 def add_fh(name):
+    if not os.path.isdir("logs"):
+        os.makedirs("logs")
+    # if log file already exists, delete it
+    log_file = os.path.join("logs", name + ".log")
+    if os.path.isfile(log_file):
+        os.remove(log_file)
+    # enhancement: move to Archive 
     fh = logging.FileHandler('logs/{}.log'.format(name))
     fh.setLevel(logging.DEBUG)
     fh.setFormatter(logger_format)
@@ -39,13 +45,15 @@ def add_fh(name):
 # add console handler to root logger (log INFO or above to terminal)
 # for general usage can set to WARN
 logger_stdout = logging.StreamHandler()
-logger_stdout.setLevel(logging.INFO)
+log_level = getattr(logging, args.log_level)
+logger_stdout.setLevel(log_level)
 logger_stdout.setFormatter(logger_format)
 root.addHandler(logger_stdout)
 
 
 def main():
     if args.download:
+        add_fh('download')
         act = ['Fran Drescher', 'America Ferrera', 'Kristin Chenoweth', 'Alec Baldwin', 'Bill Hader', 'Steve Carell']
         
         if os.path.isdir("dataset"):
