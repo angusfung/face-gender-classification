@@ -46,12 +46,12 @@ def rgb2gray(rgb):
 
     return gray/255.
         
-def get_crop_pictures(filename, act):
+def get_crop_pictures(list, act):
     
     for a in act:
         name = a.split()[1].lower()
         i = 0
-        for line in open(filename):
+        for line in open(list):
             if a in line:
                 filename = name + str(i) + '.' + line.split()[4].split('.')[-1]
                 # timeout is used to stop downloading images which take too long to download
@@ -85,7 +85,6 @@ def get_crop_pictures(filename, act):
                     try:
                         im = im[y1:y2, x1:x2]
                     except IndexError:
-                        # catching valid images as well... such as test 1
                         logger.warn("Image from {} either does not exist ".format(url))
                         print(y1, y2, x1, x2)
                         continue
@@ -107,31 +106,10 @@ def get_crop_pictures(filename, act):
                     
                 logger.info("Copied {} from {}".format(filename, url))   
                     
-                #imsave("dataset/cropped/" + filename, im)
-
-                #     try:
-                #         im = imresize(im, (32,32)) #add 3
-                #         imsave("cropped/" + filename, im)
-                #     except:
-                #             #picture is blank, need to overwrite the picture.
-                #             #decrement the counter i.
-                #             i -= 1
-                #             continue
-                #     continue
-                # 
-                # #saving a blank picture that has no pixels, cannot be resized.
-                # try:
-                #     im = rgb2gray(im)
-                #     im = imresize(im, (32,32)) #add 3
-                #     imsave("cropped/" + filename, im)
-                #     
-                # except:
-                #         #picture is blank, need to overwrite the picture.
-                #         #decrement the counter i.
-                #         i -= 1
-                #         continue
+                im = rgb2gray(im)
+                im = imresize(im, (32,32)) #add 3
+                imsave("dataset/cropped/" + filename, im)
                 
-                # increment
                 i += 1
 
     return
