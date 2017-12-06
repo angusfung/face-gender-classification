@@ -67,11 +67,10 @@ def main():
             raise IOError("Either facescrub_actors.txt or facescrub_actresses.txt is missing. Please download it.") 
             
         get_crop_pictures("facescrub_actors.txt", act)
-            # get_crop_pictures("facescrub_actresses.txt",act)
+        get_crop_pictures("facescrub_actresses.txt",act)
             
     
     
 if __name__ == '__main__':
-    args.download = 1
     main()
 
