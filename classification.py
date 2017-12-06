@@ -11,6 +11,14 @@ parser.add_argument(
     action='store_true',
     help="Download FaceScrub dataset")
 parser.add_argument(
+    '-p, '--part',
+    type=int,
+    help="""
+    Specify the part:
+    Part 1: Create non-overlapping training, validation, and test set
+    DEFAULT: 100, 10, 10
+    """)
+parser.add_argument(
     '-l', '--log-level',
     choices=['ERROR', 'WARNING', 'INFO', 'DEBUG'],
     default='WARNING',
