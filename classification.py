@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from download import *
+from src import *
 import argparse
 import logging
 import os
@@ -58,7 +59,6 @@ logger_stdout.setLevel(log_level)
 logger_stdout.setFormatter(logger_format)
 root.addHandler(logger_stdout)
 
-
 def main():
     if args.download:
         add_fh('download')
@@ -76,9 +76,11 @@ def main():
             
         get_crop_pictures("facescrub_actors.txt", act)
         get_crop_pictures("facescrub_actresses.txt",act)
-            
     
-    
+    if args.part == 1:
+        logger.info("Beginning Part 1")
+        make_dataset()
+        
 if __name__ == '__main__':
     main()
 
