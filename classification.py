@@ -12,11 +12,11 @@ parser.add_argument(
     action='store_true',
     help="Download FaceScrub dataset")
 parser.add_argument(
-    '-p, '--part',
+    '-p', '--part',
     type=int,
     help="""
     Specify the part:
-    Part 1: Create non-overlapping training, validation, and test set
+    Part 2: Create non-overlapping training, validation, and test set
     DEFAULT: 100, 10, 10
     """)
 parser.add_argument(
@@ -77,9 +77,10 @@ def main():
         get_crop_pictures("facescrub_actors.txt", act)
         get_crop_pictures("facescrub_actresses.txt",act)
     
-    if args.part == 1:
-        logger.info("Beginning Part 1")
-        make_dataset()
+    if args.part == 2:
+        logger.info("Beginning Part 2")
+        act = ['Fran Drescher', 'America Ferrera', 'Kristin Chenoweth', 'Alec Baldwin', 'Bill Hader', 'Steve Carell']
+        make_dataset(act)
         
 if __name__ == '__main__':
     main()
