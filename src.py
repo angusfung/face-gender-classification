@@ -39,9 +39,16 @@ def make_dataset(act, training_size=100, validation_size=10, test_size=10):
             Please choose a smaller training|validation|test size, as it exceeds {}, the number of 
             pictures of actor {}
             """.format(actor_size, actor))
-         
+            
+        # heed attention to strictness of equality
         
-    
+        for i in range(training_size + validation_size + test_size):
+            if i < training_size:
+                pass
+            elif (i > training_size) and (i < training_size + validation_size):
+                pass
+            else:
+                pass
     
 def makedirs(dirs):
     """Make directory if doesn't exist, else delete existing directory"""
