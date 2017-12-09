@@ -5,7 +5,7 @@ import shutil
 
 logger = logging.getLogger(__name__)
 
-def make_dataset(act):
+def make_dataset(act, training_size=100, validation_size=10, test_size=10):
     def get_range(actor):
         """Return start and end range of the actor in the filesystem"""
         start_found = 0
@@ -15,7 +15,7 @@ def make_dataset(act):
                 start = num
                 start_found = 1
             if actor not in filename and start_found == 1:
-                end = num
+                end = num - 1
                 return start, end
                 
     makedirs('dataset/training')
@@ -28,16 +28,20 @@ def make_dataset(act):
     # get number of pictures
     size = len(os.listdir('dataset/cropped'))
     
-    print(get_range('baldwin'))
-    print(get_range('carell'))
+    for actor in act:
+        actor_start, actor_end = get_range(actor)
+        actor_size = actor_end - actor_start
+        # generate a set of random numbers
+        rand = random.sample(range(act_start, actor_end), actor_size)
+        
+        if actor_size < training_size + validation_size + test_size:
+            raise ValueError("""
+            Please choose a smaller training|validation|test size, as it exceeds {}, the number of 
+            pictures of actor {}
+            """.format(actor_size, actor))
+         
+        
     
-    
-    # for actor in act:
-    #     i = 0
-    #     while i < 100:
-    #         index = random.randint(0, size)
-    #         if a in 
-    # 
     
 def makedirs(dirs):
     """Make directory if doesn't exist, else delete existing directory"""
