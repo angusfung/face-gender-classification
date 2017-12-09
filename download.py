@@ -90,7 +90,9 @@ def get_crop_pictures(list, act):
                         continue
                     else:
                         logger.info("Image from {} is already gray-scaled".format(url))
-                        logger.info("Copied {} from {}".format(filename, url))   
+                        logger.info("Copied {} from {}".format(filename, url))
+                        im = imresize(im, (32,32)) #add 3
+                        imsave("dataset/cropped/" + filename, im)
                         i += 1
                         continue
                     
