@@ -17,6 +17,11 @@ def make_dataset(act, training_size=100, validation_size=10, test_size=10):
             if actor not in filename and start_found == 1:
                 end = num - 1
                 return start, end
+        # check if start is defined but end is not
+        # it means the actor is last in the filesystem
+        if start:
+            end = num
+            return start, end
                 
     makedirs('dataset/training')
     makedirs('dataset/validation')
@@ -29,12 +34,13 @@ def make_dataset(act, training_size=100, validation_size=10, test_size=10):
     pic_names = os.listdir('dataset/cropped')
     # get number of pictures
     size = len(pic_names)
-    # name = a.split()[1].lower()
+
     for actor in act:
+        actor = actor.split()[1].lower()
         actor_start, actor_end = get_range(actor)
         actor_size = actor_end - actor_start
         # generate a set of random numbers
-        rand = random.sample(range(act_start, actor_end), actor_size)
+        rand = random.sample(range(actor_start, actor_end), actor_size)
         
         if actor_size < training_size + validation_size + test_size:
             raise ValueError("""
@@ -46,11 +52,11 @@ def make_dataset(act, training_size=100, validation_size=10, test_size=10):
         
         for i in range(training_size + validation_size + test_size):
             if i < training_size:
-                logger.warn("Training Pic {} is {}".format(i, pic_names[i]))
-            elif (i > training_size) and (i < training_size + validation_size):
-               logger.warn("Validation Pic {} is {}".format(i, pic_names[i]))
+                logger.warn("Training Pic {} is {}".format(i, pic_names[rand[i]]))
+            elif (i >= training_size) and (i < training_size + validation_size):
+               logger.warn("Validation Pic {} is {}".format(i, pic_names[rand[i]]))
             else:
-                logger.warn("Test Pic {} is {}".format(i, pic_names[i]))
+                logger.warn("Test Pic {} is {}".format(i, pic_names[rand[i]]))
     
 def makedirs(dirs):
     """Make directory if doesn't exist, else delete existing directory"""
