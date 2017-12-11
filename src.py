@@ -25,9 +25,11 @@ def make_dataset(act, training_size=100, validation_size=10, test_size=10):
     # seed for reproducibility
     random.seed(0)
     
+    # list of picture names
+    pic_names = os.listdir('dataset/cropped')
     # get number of pictures
-    size = len(os.listdir('dataset/cropped'))
-    
+    size = len(pic_names)
+    # name = a.split()[1].lower()
     for actor in act:
         actor_start, actor_end = get_range(actor)
         actor_size = actor_end - actor_start
@@ -36,7 +38,7 @@ def make_dataset(act, training_size=100, validation_size=10, test_size=10):
         
         if actor_size < training_size + validation_size + test_size:
             raise ValueError("""
-            Please choose a smaller training|validation|test size, as it exceeds {}, the number of 
+            Please choose a smaller training|validation|test size as it exceeds {}, the number of 
             pictures of actor {}
             """.format(actor_size, actor))
             
@@ -44,11 +46,11 @@ def make_dataset(act, training_size=100, validation_size=10, test_size=10):
         
         for i in range(training_size + validation_size + test_size):
             if i < training_size:
-                pass
+                logger.warn("Training Pic {} is {}".format(i, pic_names[i]))
             elif (i > training_size) and (i < training_size + validation_size):
-                pass
+               logger.warn("Validation Pic {} is {}".format(i, pic_names[i]))
             else:
-                pass
+                logger.warn("Test Pic {} is {}".format(i, pic_names[i]))
     
 def makedirs(dirs):
     """Make directory if doesn't exist, else delete existing directory"""
