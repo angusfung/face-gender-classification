@@ -35,6 +35,9 @@ def make_dataset(act, training_size=100, validation_size=10, test_size=10):
     # get number of pictures
     size = len(pic_names)
 
+    # create non-overlapping training, validation and test set
+    # 100, 10, 10 per actor, respectively
+    
     for actor in act:
         actor = actor.split()[1].lower()
         actor_start, actor_end = get_range(actor)
@@ -48,8 +51,6 @@ def make_dataset(act, training_size=100, validation_size=10, test_size=10):
             pictures of actor {}
             """.format(actor_size, actor))
             
-        # heed attention to strictness of equality
-        
         for i in range(training_size + validation_size + test_size):
             if i < training_size:
                 logger.warn("Training Pic {} is {}".format(i, pic_names[rand[i]]))
