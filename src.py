@@ -54,15 +54,16 @@ def make_dataset(act, training_size=100, validation_size=10, test_size=10):
             
         for i in range(training_size + validation_size + test_size):
             pic_name = pic_names[rand[i]]
+            pic_path = os.path.join('dataset/cropped', pic_name)
             if i < training_size:
-                copyfile(os.path.join('dataset/cropped', pic_name), 'dataset/training') 
-                logger.debug("Training Picture {} was added as {}".format(i, pic_name)
-            elif (i >= training_size) and (i < training_size + validation_size)):
-                copyfile(os.path.join('dataset/cropped', pic_name), 'validation/training') 
-               logger.debug("Validation Picture {} was added as {}".format(i, pic_name)
+                copyfile(pic_path, os.path.join('dataset/training', pic_name)) 
+                logger.debug("Training Picture {} was added as {}".format(i+1, pic_name))
+            elif (i >= training_size) and (i < training_size + validation_size):
+                copyfile(pic_path, os.path.join('dataset/validation', pic_name)) 
+                logger.debug("Validation Picture {} was added as {}".format(i+1, pic_name))
             else:
-                copyfile(os.path.join('dataset/cropped', pic_name), 'test/training') 
-                logger.debug("Test Picture {} was added as {}".format(i, pic_name)
+                copyfile(pic_path, os.path.join('dataset/test', pic_name)) 
+                logger.debug("Test Picture {} was added as {}".format(i+1, pic_name))
     
 def makedirs(dirs):
     """Make directory if doesn't exist, else delete existing directory"""
