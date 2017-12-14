@@ -2,6 +2,7 @@ import logging
 import os
 import random
 import shutil
+from shutil import copyfile
 
 logger = logging.getLogger(__name__)
 
@@ -52,12 +53,16 @@ def make_dataset(act, training_size=100, validation_size=10, test_size=10):
             """.format(actor_size, actor))
             
         for i in range(training_size + validation_size + test_size):
+            pic_name = pic_names[rand[i]]
             if i < training_size:
-                logger.warn("Training Pic {} is {}".format(i, pic_names[rand[i]]))
-            elif (i >= training_size) and (i < training_size + validation_size):
-               logger.warn("Validation Pic {} is {}".format(i, pic_names[rand[i]]))
+                copyfile(os.path.join('dataset/cropped', pic_name), 'dataset/training') 
+                logger.debug("Training Picture {} was added as {}".format(i, pic_name)
+            elif (i >= training_size) and (i < training_size + validation_size)):
+                copyfile(os.path.join('dataset/cropped', pic_name), 'validation/training') 
+               logger.debug("Validation Picture {} was added as {}".format(i, pic_name)
             else:
-                logger.warn("Test Pic {} is {}".format(i, pic_names[rand[i]]))
+                copyfile(os.path.join('dataset/cropped', pic_name), 'test/training') 
+                logger.debug("Test Picture {} was added as {}".format(i, pic_name)
     
 def makedirs(dirs):
     """Make directory if doesn't exist, else delete existing directory"""
