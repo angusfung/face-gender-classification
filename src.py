@@ -6,23 +6,10 @@ from shutil import copyfile
 
 logger = logging.getLogger(__name__)
 
+
+# part 2
+
 def make_dataset(act, training_size=100, validation_size=10, test_size=10):
-    def get_range(actor):
-        """Return start and end range of the actor in the filesystem"""
-        start_found = 0
-        
-        for num, filename in enumerate(os.listdir('dataset/cropped')):
-            if actor in filename and start_found == 0:
-                start = num
-                start_found = 1
-            if actor not in filename and start_found == 1:
-                end = num - 1
-                return start, end
-        # check if start is defined but end is not
-        # it means the actor is last in the filesystem
-        if start:
-            end = num
-            return start, end
                 
     makedirs('dataset/training')
     makedirs('dataset/validation')
@@ -41,7 +28,7 @@ def make_dataset(act, training_size=100, validation_size=10, test_size=10):
     
     for actor in act:
         actor = actor.split()[1].lower()
-        actor_start, actor_end = get_range(actor)
+        actor_start, actor_end = get_range(actor, 'dataset/cropped')
         actor_size = actor_end - actor_start
         # generate a set of random numbers
         rand = random.sample(range(actor_start, actor_end), actor_size)
@@ -64,7 +51,19 @@ def make_dataset(act, training_size=100, validation_size=10, test_size=10):
             else:
                 copyfile(pic_path, os.path.join('dataset/test', pic_name)) 
                 logger.debug("Test Picture {} was added as {}".format(i+1, pic_name))
-    
+
+# part 3
+
+def make_classifier(act):
+    for actor in act:
+        start, end = get_range(actor, 'dataset/training')
+        pic_names = os.listdir('dataset/training')
+        for index in range(start, end):
+            print(index)
+
+
+# helper functions
+
 def makedirs(dirs):
     """Make directory if doesn't exist, else delete existing directory"""
     if os.path.exists(dirs):
@@ -72,3 +71,56 @@ def makedirs(dirs):
         logger.warn("{} directory already exists, overwriting".format(dirs))
     else:
         os.makedirs(dirs)
+
+def get_range(actor, directory):
+    """Return start and end range of the actor in the filesystem"""
+    start_found = 0
+    
+    for num, filename in enumerate(os.listdir(directory)):
+        if actor in filename and start_found == 0:
+            start = num
+            start_found = 1
+        if actor not in filename and start_found == 1:
+            end = num - 1
+            return start, end
+    # check if start is defined but end is not
+    # it means the actor is last in the filesystem
+    if start:
+        end = num
+        return start, end        
+
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+

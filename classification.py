@@ -82,6 +82,12 @@ def main():
         act = ['Fran Drescher', 'America Ferrera', 'Kristin Chenoweth', 'Alec Baldwin', 'Bill Hader', 'Steve Carell']
         make_dataset(act)
         
+    
+    if args.part == 3:
+        logger.info("Beginning Part 3")
+        act = ["hader", "carell"]
+        make_classifier(act)
+        
 if __name__ == '__main__':
     main()
 
