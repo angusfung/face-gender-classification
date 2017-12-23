@@ -3,6 +3,7 @@ import os
 import random
 import shutil
 from shutil import copyfile
+from scipy.misc import imread
 
 logger = logging.getLogger(__name__)
 
@@ -56,10 +57,18 @@ def make_dataset(act, training_size=100, validation_size=10, test_size=10):
 
 def make_classifier(act):
     for actor in act:
+        # check if dataset exists, else raise exception
+        if not os.path.exists('dataset/training'):
+            raise ValueError('Your training dataset is empty')
+                        
         start, end = get_range(actor, 'dataset/training')
         pic_names = os.listdir('dataset/training')
-        for index in range(start, end):
-            print(index)
+        
+        # +1 for exclusive range
+        for index in range(start, end + 1):
+            
+            # True to keep image as grey scale, scipy opens to RGB by default
+            image = imread(pic_names[index], True)
 
 
 # helper functions
