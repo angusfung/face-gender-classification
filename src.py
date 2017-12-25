@@ -138,10 +138,11 @@ def grad_descent(f, df, x, y, init_t, alpha):
     t = init_t.copy()
     max_iter = 60000
     iter  = 0
-    while np.linalg.norm(t - prev_t) >  EPS and iter < max_iter:
+    while (np.linalg.norm(t - prev_t) >  EPS and iter < max_iter):
         prev_t = t.copy()
         t -= alpha * df(x, y, t)
         if iter % 2000 == 0:
+            
             logger.info("Iteration {}".format(iter))
             logger.info("x = ({:.2f}, {:.2f}, {:.2f}, ...,) f(x)={:.2f})".format(
                 t[0], t[1], t[2], f(x, y, t)))
@@ -150,12 +151,28 @@ def grad_descent(f, df, x, y, init_t, alpha):
     return (t,f(x, y, t))        
     
 def f(x, y, theta):
+    """cost function"""
     x = np.vstack((np.ones((1, x.shape[1])), x))
     return np.sum((y - np.dot(theta.T,x)) ** 2)
 
 def df(x, y, theta):
+    """derivative of cost function used in gradient descent"""
     x = np.vstack((np.ones((1, x.shape[1])), x))
-    return -2 * np.sum((y - np.dot(theta.T, x)) * x, 1)    
+    return -2 * np.sum((y - np.dot(theta.T, x)) * x, 1)  
+
+def h(x, opt_theta):
+    """dot product of x, optimal theta"""
+    pass
+
+def accuracy():
+    """test accuracy of theta on the validation and test set"""
+    pass
+
+    
+def optimal_theta():
+    """find optimal parameters"""
+    alpha_values = [0.0000001, 0.00000001, 0.000000001, 0.0000000001, 0.00000000001]
+    pass
     
     
     
