@@ -4,6 +4,7 @@ import random
 import shutil
 from shutil import copyfile
 from scipy.misc import imread
+import numpy as np
 
 logger = logging.getLogger(__name__)
 
@@ -56,6 +57,9 @@ def make_dataset(act, training_size=100, validation_size=10, test_size=10):
 # part 3
 
 def make_classifier(act):
+    x = np.empty((1024, 0), int)
+    y = np.empty((0, 1), int)
+    
     for actor in act:
         # check if dataset exists, else raise exception
         if not os.path.exists('dataset/training'):
@@ -64,12 +68,35 @@ def make_classifier(act):
         start, end = get_range(actor, 'dataset/training')
         pic_names = os.listdir('dataset/training')
         
+        # generate X and y matrix (theta^T X - Y)
+        """
+        Variable          Dimensions
+        ----------------------------
+        X                 (1024L, 100L)
+        theta             (1024L, 1L)
+        theta^T X         (100L, )
+        Y                 (100L, )
+        """
+        
         # +1 for exclusive range
         for index in range(start, end + 1):
             
             # True to keep image as grey scale, scipy opens to RGB by default
-            image = imread(pic_names[index], True)
-
+            image = imread(os.path.join('dataset/training', pic_names[index]), True)
+            
+            # flatten to column vector (1024 by 1)
+            im = np.reshape(image, (1024, 1))
+            x = np.hstack((x, im))
+            
+            if actor == "hader":
+                y = np.vstack((y, 1))
+            elif actor == "carell":
+                y = np.vstack((y, 0))
+            else:
+                raise ValueError("Unrecognized actor name")
+        
+    # reshape (200L, 1L) to (200L, )
+    y = np.reshape(y, (200))
 
 # helper functions
 
