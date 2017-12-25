@@ -68,7 +68,7 @@ def make_classifier(act):
         start, end = get_range(actor, 'dataset/training')
         pic_names = os.listdir('dataset/training')
         
-        # generate X and y matrix (theta^T X - Y)
+        # generate X and Y matrix (theta^T X - Y)
         """
         Variable          Dimensions
         ----------------------------
@@ -98,6 +98,13 @@ def make_classifier(act):
     # reshape (200L, 1L) to (200L, )
     y = np.reshape(y, (200))
 
+    # run gradient descent
+    
+    theta0=np.random.rand(1025)     
+    theta0 = np.array([-0.04]*1025)
+    theta = grad_descent(f, df, x, y, theta0, 0.0000000001)  
+
+
 # helper functions
 
 def makedirs(dirs):
@@ -125,10 +132,29 @@ def get_range(actor, directory):
         end = num
         return start, end        
 
-        
+def grad_descent(f, df, x, y, init_t, alpha):
+    EPS = 1e-10   
+    prev_t = init_t-10*EPS
+    t = init_t.copy()
+    max_iter = 60000
+    iter  = 0
+    while np.linalg.norm(t - prev_t) >  EPS and iter < max_iter:
+        prev_t = t.copy()
+        t -= alpha * df(x, y, t)
+        if iter % 2000 == 0:
+            logger.info("Iteration {}".format(iter))
+            print "x = (%.2f, %.2f, %.2f), f(x) = %.2f" % (t[0], t[1], t[2], f(x, y, t)) 
+            print "Gradient: ", df(x, y, t), "\n"
+        iter += 1
+    return (t,f(x, y, t))        
     
-    
-    
+def f(x, y, theta):
+    x = np.vstack((np.ones((1, x.shape[1])), x))
+    return np.sum((y - np.dot(theta.T,x)) ** 2)
+
+def df(x, y, theta):
+    x = np.vstack((np.ones((1, x.shape[1])), x))
+    return -2 * np.sum((y - np.dot(theta.T, x)) * x, 1)    
     
     
     
