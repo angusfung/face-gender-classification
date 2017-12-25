@@ -143,8 +143,9 @@ def grad_descent(f, df, x, y, init_t, alpha):
         t -= alpha * df(x, y, t)
         if iter % 2000 == 0:
             logger.info("Iteration {}".format(iter))
-            print "x = (%.2f, %.2f, %.2f), f(x) = %.2f" % (t[0], t[1], t[2], f(x, y, t)) 
-            print "Gradient: ", df(x, y, t), "\n"
+            logger.info("x = ({:.2f}, {:.2f}, {:.2f}, ...,) f(x)={:.2f})".format(
+                t[0], t[1], t[2], f(x, y, t)))
+            logger.info("Gradient: {} \n".format(df(x, y, t)))
         iter += 1
     return (t,f(x, y, t))        
     
