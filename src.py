@@ -100,10 +100,14 @@ def make_classifier(act):
 
     # run gradient descent
     
-    theta0=np.random.rand(1025)     
-    theta0 = np.array([-0.04]*1025)
-    theta, value = grad_descent(f, df, x, y, theta0, 0.0000000001)  
-
+    # theta0=np.random.rand(1025)     
+    # theta0 = np.array([-0.04]*1025)
+    # theta, value = grad_descent(f, df, x, y, theta0, 0.0000000001)      
+    # actor_score = accuracy(act, 'test', theta)
+    # print(actor_score)
+    
+    # find optimal theta
+    optimal_theta(act, x, y)
 
 # helper functions
 
@@ -136,17 +140,17 @@ def grad_descent(f, df, x, y, init_t, alpha):
     EPS = 1e-10   
     prev_t = init_t-10*EPS
     t = init_t.copy()
-    max_iter = 60000
+    max_iter = 40000
     iter  = 0
     while (np.linalg.norm(t - prev_t) >  EPS and iter < max_iter):
         prev_t = t.copy()
         t -= alpha * df(x, y, t)
         if iter % 2000 == 0:
             
-            logger.info("Iteration {}".format(iter))
-            logger.info("x = ({:.2f}, {:.2f}, {:.2f}, ...,) f(x)={:.2f})".format(
+            logger.debug("Iteration {}".format(iter))
+            logger.debug("x = ({:.2f}, {:.2f}, {:.2f}, ...,) f(x)={:.2f})".format(
                 t[0], t[1], t[2], f(x, y, t)))
-            logger.info("Gradient: {} \n".format(df(x, y, t)))
+            logger.debug("Gradient: {} \n".format(df(x, y, t)))
         iter += 1
     return (t,f(x, y, t))        
     
@@ -162,35 +166,56 @@ def df(x, y, theta):
 
 def h(x, opt_theta):
     """dot product of x, optimal theta"""
-    
-    pass
+    return np.dot(x, opt_theta)
 
-def accuracy(actor_list, dataset):
+def accuracy(actor_list, dataset, opt_theta):
     """test accuracy of theta on the validation and test set"""
-    actor_score = {actor: 0 for i in range(len(actor_list))}
+    actor_score = {actor: 0 for actor in actor_list}
     
     for actor in actor_list:
+        if not os.path.exists(os.path.join('dataset', dataset)):
+            raise ValueError("The directory {} does not exist under dataset/".format(dataset))
+            
         start, end = get_range(actor, os.path.join('dataset', dataset))
-        pic_names = os.listdir('dataset/validation')
+        pic_names = os.listdir(os.path.join('dataset', dataset))
         
         for index in range(start, end + 1):
             # True to keep image as grey scale, scipy opens to RGB by default
             image = imread(os.path.join(os.path.join('dataset', dataset), pic_names[index]), True)
             
-            # flatten to column vector (1024 by 1)
-            im = np.reshape(image, (1024, 1))
+            # flatten to column vector (1024L,)
+            im = np.reshape(image, (1024))
             
             # add the bias
             im = np.hstack((1, im))
             
-            print(im.shape)
-        
+            h_ = h(im, opt_theta)
+            
+            if h_ >= 0.5 and (actor == 'hader'):
+                actor_score['hader'] += 1
+            elif h_ < 0.5 and (actor == 'carell'):
+                actor_score['carell'] += 1
+    
+    return actor_score
 
     
-def optimal_theta():
+def optimal_theta(act, x, y):
     """find optimal parameters"""
-    alpha_values = [0.0000001, 0.00000001, 0.000000001, 0.0000000001, 0.00000000001]
-    pass
+    alpha_values = [1e-7, 1e-8, 1e-9, 1e-10, 1e-11] 
+    initial_theta = [i * 0.01 for i in range (-10, 10, 2)]
+    
+    for alpha in alpha_values:
+        for theta in initial_theta:
+            logger.info("Gradient descent using alpha {} and theta {}".format(alpha, theta))
+            theta_ = np.array([theta] * 1025)
+            opt_theta, value = grad_descent(f, df, x, y, theta_, alpha)
+            actor_score_val = accuracy(act, 'validation', opt_theta)
+            actor_score_test = accuracy(act, 'test', opt_theta)
+            logger.info("Validation Score: {}".format(actor_score_val))
+            logger.info("Test Score: {}".format(actor_score_test))
+            
+            
+            
     
     
     
