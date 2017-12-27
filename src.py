@@ -102,7 +102,7 @@ def make_classifier(act):
     
     theta0=np.random.rand(1025)     
     theta0 = np.array([-0.04]*1025)
-    theta = grad_descent(f, df, x, y, theta0, 0.0000000001)  
+    theta, value = grad_descent(f, df, x, y, theta0, 0.0000000001)  
 
 
 # helper functions
@@ -162,11 +162,29 @@ def df(x, y, theta):
 
 def h(x, opt_theta):
     """dot product of x, optimal theta"""
+    
     pass
 
-def accuracy():
+def accuracy(actor_list, dataset):
     """test accuracy of theta on the validation and test set"""
-    pass
+    actor_score = {actor: 0 for i in range(len(actor_list))}
+    
+    for actor in actor_list:
+        start, end = get_range(actor, os.path.join('dataset', dataset))
+        pic_names = os.listdir('dataset/validation')
+        
+        for index in range(start, end + 1):
+            # True to keep image as grey scale, scipy opens to RGB by default
+            image = imread(os.path.join(os.path.join('dataset', dataset), pic_names[index]), True)
+            
+            # flatten to column vector (1024 by 1)
+            im = np.reshape(image, (1024, 1))
+            
+            # add the bias
+            im = np.hstack((1, im))
+            
+            print(im.shape)
+        
 
     
 def optimal_theta():
