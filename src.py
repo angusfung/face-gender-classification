@@ -5,6 +5,7 @@ import shutil
 from shutil import copyfile
 from scipy.misc import imread
 import numpy as np
+from classification import *
 
 logger = logging.getLogger(__name__)
 
@@ -203,6 +204,9 @@ def optimal_theta(act, x, y):
     """find optimal parameters"""
     alpha_values = [1e-7, 1e-8, 1e-9, 1e-10, 1e-11] 
     initial_theta = [i * 0.01 for i in range (-10, 10, 2)]
+    
+    # add file handler
+    add_fh('optimal_theta', logging.INFO)
     
     for alpha in alpha_values:
         for theta in initial_theta:

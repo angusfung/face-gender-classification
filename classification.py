@@ -38,7 +38,7 @@ logger.setLevel(logging.DEBUG)
 logger_format = logging.Formatter('%(name)s - %(levelname)s: %(message)s')
 
 # add file handler
-def add_fh(name):
+def add_fh(name, level):
     if not os.path.isdir("logs"):
         os.makedirs("logs")
     # if log file already exists, delete it
@@ -47,7 +47,7 @@ def add_fh(name):
         os.remove(log_file)
     # enhancement: move to Archive 
     fh = logging.FileHandler('logs/{}.log'.format(name))
-    fh.setLevel(logging.DEBUG)
+    fh.setLevel(level)
     fh.setFormatter(logger_format)
     root.addHandler(fh)
 
@@ -61,7 +61,7 @@ root.addHandler(logger_stdout)
 
 def main():
     if args.download:
-        add_fh('download')
+        add_fh('download', logging.DEBUG)
         act = ['Fran Drescher', 'America Ferrera', 'Kristin Chenoweth', 'Alec Baldwin', 'Bill Hader', 'Steve Carell']
         
         if os.path.isdir("dataset"):
@@ -89,5 +89,6 @@ def main():
         make_classifier(act)
         
 if __name__ == '__main__':
+    args.part = 3
     main()
 
