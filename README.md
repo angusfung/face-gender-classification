@@ -10,7 +10,7 @@ You must download the dataset before running any parts of the code.
 ./classification.py --download --log INFO 
 ```
 
-This will download from the FaceScrub dataset into two directories:
+This will download from the FaceScrub dataset into two directories under `dataset/`
 
 
 
