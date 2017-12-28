@@ -34,17 +34,6 @@ parser.add_argument(
     help="set logging level (default: %(default)s)")
 args = parser.parse_args()
 
-# set root logger
-root = logging.getLogger()
-root.setLevel(logging.DEBUG)
-
-# set module logger
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-
-# use name to keep track of task
-logger_format = logging.Formatter('%(name)s - %(levelname)s: %(message)s')
-
 # add file handler
 def add_fh(name, level):
     if not os.path.isdir("logs"):
@@ -58,14 +47,6 @@ def add_fh(name, level):
     fh.setLevel(level)
     fh.setFormatter(logger_format)
     root.addHandler(fh)
-
-# add console handler to root logger (log INFO or above to terminal)
-# for general usage can set to WARN
-logger_stdout = logging.StreamHandler()
-log_level = getattr(logging, args.log_level)
-logger_stdout.setLevel(log_level)
-logger_stdout.setFormatter(logger_format)
-root.addHandler(logger_stdout)
 
 def main():
     if args.download:
@@ -101,5 +82,24 @@ def main():
             make_classifier(act, True)
         
 if __name__ == '__main__':
+    # set root logger
+    root = logging.getLogger()
+    root.setLevel(logging.DEBUG)
+    
+    # set module logger
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.DEBUG)
+    
+    # use name to keep track of task
+    logger_format = logging.Formatter('%(name)s - %(levelname)s: %(message)s')
+    
+    # add console handler to root logger (log INFO or above to terminal)
+    # for general usage can set to WARN
+    logger_stdout = logging.StreamHandler()
+    log_level = getattr(logging, args.log_level)
+    logger_stdout.setLevel(log_level)
+    logger_stdout.setFormatter(logger_format)
+    root.addHandler(logger_stdout)
+
     main()
 
