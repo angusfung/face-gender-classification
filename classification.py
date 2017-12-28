@@ -18,6 +18,14 @@ parser.add_argument(
     Specify the part:
     Part 2: Create non-overlapping training, validation, and test set
     DEFAULT: 100, 10, 10
+    Part 3: Create a classifier between Hader and Carell
+    """)
+parser.add_argument(
+    '-o', '--optimal', 
+    action='store_true',
+    help="""
+    Find the optimal parameters for gradient descent.
+    Must also specify a part.
     """)
 parser.add_argument(
     '-l', '--log-level',
@@ -86,9 +94,12 @@ def main():
     if args.part == 3:
         logger.info("Beginning Part 3")
         act = ["hader", "carell"]
-        make_classifier(act)
+        
+        if not args.optimal:
+            make_classifier(act)
+        else:
+            make_classifier(act, True)
         
 if __name__ == '__main__':
-    args.part = 3
     main()
 

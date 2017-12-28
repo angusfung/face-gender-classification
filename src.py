@@ -57,7 +57,7 @@ def make_dataset(act, training_size=100, validation_size=10, test_size=10):
 
 # part 3
 
-def make_classifier(act):
+def make_classifier(act, optimal=False):
     x = np.empty((1024, 0), int)
     y = np.empty((0, 1), int)
     
@@ -98,17 +98,20 @@ def make_classifier(act):
         
     # reshape (200L, 1L) to (200L, )
     y = np.reshape(y, (200))
-
+    
+    # find optimal parameters
+    if optimal:
+        optimal_params(act, x, y)
+        return
+        
     # run gradient descent
-    
-    # theta0=np.random.rand(1025)     
-    # theta0 = np.array([-0.04]*1025)
-    # theta, value = grad_descent(f, df, x, y, theta0, 0.0000000001)      
-    # actor_score = accuracy(act, 'test', theta)
-    # print(actor_score)
-    
-    # find optimal theta
-    optimal_theta(act, x, y)
+        
+    init_theta = np.array([0] * 1025)
+    theta, value = grad_descent(f, df, x, y, theta0, 1e-11)      
+    actor_score = accuracy(act, 'test', theta)
+    print(actor_score)
+    actor_score = accuracy(act, 'validation', theta)
+    print(actor_score)
 
 # helper functions
 
@@ -200,7 +203,7 @@ def accuracy(actor_list, dataset, opt_theta):
     return actor_score
 
     
-def optimal_theta(act, x, y):
+def optimal_params(act, x, y):
     """find optimal parameters"""
     alpha_values = [1e-7, 1e-8, 1e-9, 1e-10, 1e-11] 
     initial_theta = [i * 0.01 for i in range (-10, 10, 2)]
