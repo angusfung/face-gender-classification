@@ -106,15 +106,26 @@ def make_classifier(act, optimal=False):
         
     # run gradient descent
         
-    init_theta = np.array([0] * 1025)
-    theta, value = grad_descent(f, df, x, y, theta0, 1e-11)      
+    init_theta = np.array([0.00] * 1025)
+    theta, f_value = grad_descent(f, df, x, y, init_theta, 1e-11)      
     actor_score = accuracy(act, 'test', theta)
     print(actor_score)
     actor_score = accuracy(act, 'validation', theta)
     print(actor_score)
+    
+    # save the theta value
+    
 
 # helper functions
 
+def visualize(theta);
+    """visualize theta"""
+    # ignore the bias term
+    im = reshape(theta[1:], (32, 32))
+    imshow(im)
+    show()
+    
+    
 def makedirs(dirs):
     """Make directory if doesn't exist, else delete existing directory"""
     if os.path.exists(dirs):
