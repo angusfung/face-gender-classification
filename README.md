@@ -23,8 +23,12 @@ This process creates non-overlapping, reproducible (seeded) datasets for the act
 ```
 ./classification.py --part 3 --log INFO
 ```
-The implementation details are in the PDF. 
-The optimal parameters for gradient descent were determined by adding the `--optimal` option. A sample report of that is under `logs/optimal_params`. Those optimal parameters are then used in gradient descent to determine the optimized theta value, which is then saved into `part3.pkl`.
+The implementation details are in the PDF. The optimal parameters for gradient descent were determined by using the `--optimal` option. A sample report of that is under `logs/optimal_params`. Those optimal parameters are then used in gradient descent to determine the optimized theta value, which is subsequently saved into `part3.pkl`.  
+
+The classifier is then used to classfy 10 images of hader and carell, and the results are printed to the terminal.
+
+### Visualizing theta
+
 
 
 
