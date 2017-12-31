@@ -24,7 +24,7 @@ This process creates non-overlapping, reproducible (seeded) datasets for the act
 ./classification.py --part 3 --log INFO
 ```
 The implementation details are in the PDF. 
-The optimal parameters for gradient descent were determined by adding the `--optimal` option. A sample report is under `logs/optimal_params`. 
+The optimal parameters for gradient descent were determined by adding the `--optimal` option. A sample report of that is under `logs/optimal_params`. Those optimal parameters are then used in gradient descent to determine the optimized theta value, which is then saved into `part3.pkl`.
 
 
 
