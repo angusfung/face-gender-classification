@@ -130,7 +130,50 @@ def visualize(theta):
     imshow(im)
     show()
     
-# helper functions
+def two_image_classifier(act):
+    x = np.empty((1024, 0), int)
+    y = np.empty((0, 1), int)
+    
+    for actor in act:
+        # check if dataset exists, else raise exception
+        if not os.path.exists('dataset/training'):
+            raise ValueError('Your training dataset is empty')
+                        
+        start, end = get_range(actor, 'dataset/training')
+        pic_names = os.listdir('dataset/training')
+        
+        # generate X and Y matrix (theta^T X - Y)
+
+        for index in range(start, start + 2):
+            
+            # True to keep image as grey scale, scipy opens to RGB by default
+            image = imread(os.path.join('dataset/training', pic_names[index]), True)
+            
+            # flatten to column vector (1024 by 1)
+            im = np.reshape(image, (1024, 1))
+            x = np.hstack((x, im))
+            
+            if actor == "hader":
+                y = np.vstack((y, 1))
+            elif actor == "carell":
+                y = np.vstack((y, 0))
+            else:
+                raise ValueError("Unrecognized actor name")
+        
+    # reshape (200L, 1L) to (200L, )
+    y = np.reshape(y, (4))
+    
+    # run gradient descent
+        
+    init_theta = np.array([0.00] * 1025)
+    theta, f_value = grad_descent(f, df, x, y, init_theta, 1e-11)      
+    actor_score = accuracy(act, 'test', theta)
+    logger.info(actor_score)
+    actor_score = accuracy(act, 'validation', theta)
+    logger.info(actor_score)
+    visualize(theta)
+    
+# --------------------- helper functions --------------------- #
     
 def makedirs(dirs):
     """Make directory if doesn't exist, else delete existing directory"""
