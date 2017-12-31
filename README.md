@@ -28,6 +28,12 @@ The implementation details are in the PDF. The optimal parameters for gradient d
 The classifier is then used to classfy 10 images of hader and carell, and the results are printed to the terminal.
 
 ### Visualizing theta
+```
+./classification.py --part 4 --log INFO
+```
+This visualizes the optimized theta by loading the saved theta value from part 3, for both the full training set and a two-image training set.
+
+
 
 
 
