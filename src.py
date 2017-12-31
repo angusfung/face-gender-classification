@@ -59,7 +59,10 @@ def make_dataset(act, training_size=100, validation_size=10, test_size=10):
 
 # part 3
 
-def make_classifier(act, optimal=False):
+def make_classifier(
+    act, part_name, optimal=False,
+    training_size=100):
+        
     x = np.empty((1024, 0), int)
     y = np.empty((0, 1), int)
     
@@ -83,6 +86,8 @@ def make_classifier(act, optimal=False):
         
         # +1 for exclusive range
         for index in range(start, end + 1):
+            if (index - start >= training_size):
+                break
             
             # True to keep image as grey scale, scipy opens to RGB by default
             image = imread(os.path.join('dataset/training', pic_names[index]), True)
@@ -99,7 +104,8 @@ def make_classifier(act, optimal=False):
                 raise ValueError("Unrecognized actor name")
         
     # reshape (200L, 1L) to (200L, )
-    y = np.reshape(y, (200))
+    total_training_size = training_size * len(act)
+    y = np.reshape(y, (total_training_size))
     
     # find optimal parameters
     if optimal:
@@ -110,16 +116,14 @@ def make_classifier(act, optimal=False):
         
     init_theta = np.array([0.00] * 1025)
     theta, f_value = grad_descent(f, df, x, y, init_theta, 1e-11)      
-    actor_score = accuracy(act, 'test', theta)
-    logger.info(actor_score)
-    actor_score = accuracy(act, 'validation', theta)
-    logger.info(actor_score)
     
     # save the theta value
     
-    file = open(r'part3.pkl', 'ab')
+    file = open(r'{}.pkl'.format(part_name), 'ab')
     pickle.dump(theta, file)
     file.close()
+    
+    return theta
 
 # part 4
 
@@ -130,48 +134,6 @@ def visualize(theta):
     imshow(im)
     show()
     
-def two_image_classifier(act):
-    x = np.empty((1024, 0), int)
-    y = np.empty((0, 1), int)
-    
-    for actor in act:
-        # check if dataset exists, else raise exception
-        if not os.path.exists('dataset/training'):
-            raise ValueError('Your training dataset is empty')
-                        
-        start, end = get_range(actor, 'dataset/training')
-        pic_names = os.listdir('dataset/training')
-        
-        # generate X and Y matrix (theta^T X - Y)
-
-        for index in range(start, start + 2):
-            
-            # True to keep image as grey scale, scipy opens to RGB by default
-            image = imread(os.path.join('dataset/training', pic_names[index]), True)
-            
-            # flatten to column vector (1024 by 1)
-            im = np.reshape(image, (1024, 1))
-            x = np.hstack((x, im))
-            
-            if actor == "hader":
-                y = np.vstack((y, 1))
-            elif actor == "carell":
-                y = np.vstack((y, 0))
-            else:
-                raise ValueError("Unrecognized actor name")
-        
-    # reshape (200L, 1L) to (200L, )
-    y = np.reshape(y, (4))
-    
-    # run gradient descent
-        
-    init_theta = np.array([0.00] * 1025)
-    theta, f_value = grad_descent(f, df, x, y, init_theta, 1e-11)      
-    actor_score = accuracy(act, 'test', theta)
-    logger.info(actor_score)
-    actor_score = accuracy(act, 'validation', theta)
-    logger.info(actor_score)
-    visualize(theta)
     
 # --------------------- helper functions --------------------- #
     
@@ -232,7 +194,7 @@ def h(x, opt_theta):
     """dot product of x, optimal theta"""
     return np.dot(x, opt_theta)
 
-def accuracy(actor_list, dataset, opt_theta):
+def accuracy(actor_list, dataset, opt_theta, size=10):
     """test accuracy of theta on the validation and test set"""
     actor_score = {actor: 0 for actor in actor_list}
     
@@ -244,6 +206,9 @@ def accuracy(actor_list, dataset, opt_theta):
         pic_names = os.listdir(os.path.join('dataset', dataset))
         
         for index in range(start, end + 1):
+            if (index - start >= size):
+                break
+                
             # True to keep image as grey scale, scipy opens to RGB by default
             image = imread(os.path.join(os.path.join('dataset', dataset), pic_names[index]), True)
             

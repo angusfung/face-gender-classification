@@ -67,28 +67,50 @@ def main():
         get_crop_pictures("facescrub_actresses.txt",act)
     
     if args.part == 2:
-        logger.info("Beginning Part 2")
+        logger.info("Beginning Part 2 -- Generating training, test, validation set")
         act = ['Fran Drescher', 'America Ferrera', 'Kristin Chenoweth', 'Alec Baldwin', 'Bill Hader', 'Steve Carell']
         make_dataset(act)
-        
-    
+
     if args.part == 3:
-        logger.info("Beginning Part 3")
+        logger.info("Beginning Part 3 -- Creating a classifier between Hader and Carell")
         act = ["hader", "carell"]
         
         if not args.optimal:
-            make_classifier(act)
+            theta = make_classifier(act, 'part3')
         else:
-            make_classifier(act, True)
+            theta = make_classifier(act, 'part3', True)
+            
+        actor_score = accuracy(act, 'test', theta)
+        logger.info(actor_score)
+        actor_score = accuracy(act, 'validation', theta)
+        logger.info(actor_score)
             
     if args.part == 4:
-        logger.info("Beginning Part 4")
+        logger.info("Beginning Part 4 -- Visualizing theta")
         
         logger.info("Visualize theta with full training set")
+        
         # load the saved theta
         with open(r'part3.pkl', 'rb') as f:
             theta = pickle.load(f)
         visualize(theta)
+        
+        logger.info("Visualize theta with two-image training set")
+        act = ["hader", "carell"]
+        theta = make_classifier(act, 'part4', training_size=2)
+        visualize(theta)
+        
+    # if args.part == 5:
+    #     logger.info("Beginning Part 5 -- Gender Classification")
+    #     act = ['drescher', 'ferrera', 'chenoweth', 'baldwin', 'hader', 'carell']
+    #     
+    #     # vary training size
+    #     max_size = 100
+    #     training_size = [10 * x for x in range(1, max_size + 1)]
+    #     
+    #     for size in training_size:
+            
+        
         
 if __name__ == '__main__':
     # set root logger
