@@ -80,6 +80,15 @@ def main():
             make_classifier(act)
         else:
             make_classifier(act, True)
+            
+    if args.part == 4:
+        logger.info("Beginning Part 4")
+        
+        logger.info("Visualize theta with full training set")
+        # load the saved theta
+        with open(r'part3.pkl', 'rb') as f:
+            theta = pickle.load(f)
+        visualize(theta)
         
 if __name__ == '__main__':
     # set root logger

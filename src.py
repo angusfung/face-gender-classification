@@ -6,6 +6,8 @@ from shutil import copyfile
 from scipy.misc import imread
 import numpy as np
 from classification import *
+import pickle
+from pylab import imshow, show
 
 logger = logging.getLogger(__name__)
 
@@ -109,22 +111,26 @@ def make_classifier(act, optimal=False):
     init_theta = np.array([0.00] * 1025)
     theta, f_value = grad_descent(f, df, x, y, init_theta, 1e-11)      
     actor_score = accuracy(act, 'test', theta)
-    print(actor_score)
+    logger.info(actor_score)
     actor_score = accuracy(act, 'validation', theta)
-    print(actor_score)
+    logger.info(actor_score)
     
     # save the theta value
     
+    file = open(r'part3.pkl', 'ab')
+    pickle.dump(theta, file)
+    file.close()
 
-# helper functions
+# part 4
 
-def visualize(theta);
+def visualize(theta):
     """visualize theta"""
     # ignore the bias term
-    im = reshape(theta[1:], (32, 32))
+    im = np.reshape(theta[1:], (32, 32))
     imshow(im)
     show()
     
+# helper functions
     
 def makedirs(dirs):
     """Make directory if doesn't exist, else delete existing directory"""
