@@ -118,7 +118,7 @@ def main():
             'Alec Baldwin', 'Bill Hader', 'Steve Carell',
             ]
         gender_classification(training_act)
-        
+                
         
 if __name__ == '__main__':
     # set root logger
