@@ -37,7 +37,7 @@ This visualizes the optimized theta by loading the saved theta value from part 3
 ```
 ./classification.py --part 5 --log INFO
 ```
-Trains the classifier on images of `6` different actors / actresses and then tests the performance on `10` images of `6` other actors / actresses. The size of the training size varies from `10` to `70` and the performance is plotted. 
+Trains the classifier on images of `6` actors / actresses and then tests the performance on `10` images of `6` different actors / actresses. The size of the training size is varied from `10` to `70` and the performance is plotted. 
 
 
 
