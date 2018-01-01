@@ -96,13 +96,24 @@ def make_classifier(
             im = np.reshape(image, (1024, 1))
             x = np.hstack((x, im))
             
-            if actor == "hader":
-                y = np.vstack((y, 1))
-            elif actor == "carell":
-                y = np.vstack((y, 0))
-            else:
-                raise ValueError("Unrecognized actor name")
-        
+            # if part 3, do hader VS. carell
+            if args.part == 3:
+                if actor == "hader":
+                    y = np.vstack((y, 1))
+                elif actor == "carell":
+                    y = np.vstack((y, 0))
+                else:
+                    raise ValueError("Unrecognized actor name")
+            
+            # if part 5, do gender classification
+            elif args.part == 5:
+                if actor in ['drescher', 'ferrera', 'chenoweth']:
+                    y = np.vstack((y, 1))
+                elif actor in ['baldwin', 'hader', 'carell']:
+                    y = np.vstack((y, 0))
+                else:
+                    raise ValueError("Unrecognized actor name")
+                    
     # reshape (200L, 1L) to (200L, )
     total_training_size = training_size * len(act)
     y = np.reshape(y, (total_training_size))
@@ -113,7 +124,6 @@ def make_classifier(
         return
         
     # run gradient descent
-        
     init_theta = np.array([0.00] * 1025)
     theta, f_value = grad_descent(f, df, x, y, init_theta, 1e-11)      
     
@@ -134,6 +144,40 @@ def visualize(theta):
     imshow(im)
     show()
     
+# part 5 
+
+def gender_classification(act):
+    
+    # vary training size
+    max_size = 70
+    training_size = [10 * x for x in range(1, max_size + 1)]
+    
+    theta_dict = {}
+    validation_dict = {}
+    test_dict = {}
+    
+    make_dataset(act, training_size=70, validation_size=10, test_size=10)
+    
+    act = [name.split()[1].lower() for name in act]
+    # train the classifier
+    for size in training_size:
+        logger.info("Gender classification with training size {}".format(size))
+        theta = make_classifier(act, 'part5', training_size=size)
+        theta_dict[size] = theta
+        
+    # test the classifier
+    for size, theta in theta_dict:
+        validation_score = accuracy(act, 'validation', theta)
+        test_score = accuracy(act, 'test', theta)
+        
+        validation_dict[size] = validation_score
+        test_dict[size] = test_score
+        
+    file = open(r'part5.pkl', 'ab')
+    pickle.dump(size, file)
+    pickle.dump(validation_dict, file)
+    pickle.dump(test_dict, file)
+    file.close()
     
 # --------------------- helper functions --------------------- #
     
@@ -148,7 +192,6 @@ def makedirs(dirs):
 def get_range(actor, directory):
     """Return start and end range of the actor in the filesystem"""
     start_found = 0
-    
     for num, filename in enumerate(os.listdir(directory)):
         if actor in filename and start_found == 0:
             start = num
@@ -163,6 +206,7 @@ def get_range(actor, directory):
         return start, end        
 
 def grad_descent(f, df, x, y, init_t, alpha):
+    logger.info("Beginning Gradient Descent")
     EPS = 1e-10   
     prev_t = init_t-10*EPS
     t = init_t.copy()
@@ -226,8 +270,7 @@ def accuracy(actor_list, dataset, opt_theta, size=10):
                 actor_score['carell'] += 1
     
     return actor_score
-
-    
+        
 def optimal_params(act, x, y):
     """find optimal parameters"""
     alpha_values = [1e-7, 1e-8, 1e-9, 1e-10, 1e-11] 

@@ -51,7 +51,12 @@ def add_fh(name, level):
 def main():
     if args.download:
         add_fh('download', logging.DEBUG)
-        act = ['Fran Drescher', 'America Ferrera', 'Kristin Chenoweth', 'Alec Baldwin', 'Bill Hader', 'Steve Carell']
+        act = [
+            'Fran Drescher', 'America Ferrera', 'Kristin Chenoweth',
+            'Alec Baldwin', 'Bill Hader', 'Steve Carell',
+            'Gerard Butler', 'Daniel Radcliffe', 'Michael Vartan',
+            'Lorraine Bracco', 'Peri Gilpin', 'Angie Harmon',
+            ]
         
         if os.path.isdir("dataset"):
             logger.warn("dataset directory already exists, removed existing")
@@ -68,7 +73,10 @@ def main():
     
     if args.part == 2:
         logger.info("Beginning Part 2 -- Generating training, test, validation set")
-        act = ['Fran Drescher', 'America Ferrera', 'Kristin Chenoweth', 'Alec Baldwin', 'Bill Hader', 'Steve Carell']
+        act = [
+            'Fran Drescher', 'America Ferrera', 'Kristin Chenoweth',
+            'Alec Baldwin', 'Bill Hader', 'Steve Carell',
+            ]
         make_dataset(act)
 
     if args.part == 3:
@@ -91,6 +99,9 @@ def main():
         logger.info("Visualize theta with full training set")
         
         # load the saved theta
+        if not os.path.isfile('part3.pkl'):
+            raise ValueError("You must run part 3 first")
+            
         with open(r'part3.pkl', 'rb') as f:
             theta = pickle.load(f)
         visualize(theta)
@@ -100,16 +111,13 @@ def main():
         theta = make_classifier(act, 'part4', training_size=2)
         visualize(theta)
         
-    # if args.part == 5:
-    #     logger.info("Beginning Part 5 -- Gender Classification")
-    #     act = ['drescher', 'ferrera', 'chenoweth', 'baldwin', 'hader', 'carell']
-    #     
-    #     # vary training size
-    #     max_size = 100
-    #     training_size = [10 * x for x in range(1, max_size + 1)]
-    #     
-    #     for size in training_size:
-            
+    if args.part == 5:
+        logger.info("Beginning Part 5 -- Gender Classification")
+        training_act = [
+            'Fran Drescher', 'America Ferrera', 'Kristin Chenoweth',
+            'Alec Baldwin', 'Bill Hader', 'Steve Carell',
+            ]
+        gender_classification(training_act)
         
         
 if __name__ == '__main__':
