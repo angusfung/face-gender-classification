@@ -1,10 +1,10 @@
 # classification
 
-This is a an adaption of faces.py using the PEP8 coding style. 
+This is a an adaption of faces.py using the PEP8 coding style.  Rewrite this and describe the project better.
 
 ## Download
 
-You must download the dataset before running any parts of the code. Rewrite this and describe the project better.
+You must download the dataset before running any parts of the code.
 
 ```
 ./classification.py --download --log INFO 
