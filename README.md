@@ -41,7 +41,7 @@ Trains the classifier on images of `6` actors / actresses and then tests the per
 
 ### Multi-actor classification using One Hot Encoding
 ```
-./classification.py --part 7 --log DEBUG
+./classification.py --part 7 --log INFO
 ```
 Trains the classifier on images of `6` actors / actresses and then attempts to classify them on the validation and test set.
 
