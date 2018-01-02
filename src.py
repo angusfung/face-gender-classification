@@ -256,13 +256,18 @@ def verification():
 def one_hot_classification():
     act = ['drescher', 'ferrera', 'chenoweth', 'baldwin', 'hader', 'carell']
     theta = make_classifier(act, 'part7')
-
+        
+    # save the theta value
+    file = open(r'part{}.pkl'.format(args.part), 'ab')
+    pickle.dump(theta, file)
+    file.close()
+    
     actor_score = accuracy(act, 'training', theta)
-    logger.info(actor_score)
+    logger.info("Performance on the training set is {}".format(actor_score))
     actor_score = accuracy(act, 'test', theta)
-    logger.info(actor_score)
+    logger.info("Performance on the testing set is {}".format(actor_score))
     actor_score = accuracy(act, 'validation', theta)
-    logger.info(actor_score)
+    logger.info("Performance on the validation set is {}".format(actor_score))
     
 # --------------------- helper functions --------------------- #
     
