@@ -67,6 +67,9 @@ def make_classifier(
     x = np.empty((1024, 0), int)
     y = np.empty((0, 1), int)
     
+    if args.part == 7:
+        y = np.empty((6, 0), int)
+    
     for actor in act:
         # check if dataset exists, else raise exception
         if not os.path.exists('dataset/training'):
@@ -114,10 +117,28 @@ def make_classifier(
                     y = np.vstack((y, 0))
                 else:
                     raise ValueError("Unrecognized actor name")
+                
+            # if part 7, do one-hot classification
+            elif args.part == 7:
+                if actor == "drescher":
+                    y = np.hstack((y, np.reshape([1,0,0,0,0,0],(6,1))))
+                elif actor == "ferrera":
+                    y = np.hstack((y, np.reshape([0,1,0,0,0,0],(6,1))))
+                elif actor == "chenoweth":
+                    y = np.hstack((y, np.reshape([0,0,1,0,0,0],(6,1))))
+                elif actor == "baldwin":
+                    y = np.hstack((y, np.reshape([0,0,0,1,0,0],(6,1))))
+                elif actor == "hader":
+                    y = np.hstack((y, np.reshape([0,0,0,0,1,0],(6,1))))
+                elif actor == "carell":
+                    y = np.hstack((y, np.reshape([0,0,0,0,0,1],(6,1))))
+                else:
+                    raise ValueError("Unrecognized actor name")
                     
     # reshape (200L, 1L) to (200L, )
     total_training_size = training_size * len(act)
-    y = np.reshape(y, (total_training_size))
+    if not args.part == 7:
+        y = np.reshape(y, (total_training_size))
     
     # find optimal parameters
     if optimal:
@@ -125,8 +146,13 @@ def make_classifier(
         return
         
     # run gradient descent
-    init_theta = np.array([0.00] * 1025)
-    theta, f_value = grad_descent(f, df, x, y, init_theta, 1e-11)      
+    if args.part == 7:
+        init_theta = np.array([0.00] * 1025 * 6)
+        init_theta = np.reshape(init_theta, (1025, 6))
+        theta, f_value = grad_descent(fv, dfv, x, y, init_theta, 1e-11)  
+    else:
+        init_theta = np.array([0.00] * 1025)
+        theta, f_value = grad_descent(f, df, x, y, init_theta, 1e-11)     
     
     # save the theta value
     
@@ -225,7 +251,19 @@ def verification():
         logger.info((fv(x, y, theta + dtheta) - fv(x, y, theta - dtheta)) / (2 * h))
         logger.info(dfv(x, y, theta))
         logger.info("---------------------------------------------")
-        
+    
+# part 7
+def one_hot_classification():
+    act = ['drescher', 'ferrera', 'chenoweth', 'baldwin', 'hader', 'carell']
+    theta = make_classifier(act, 'part7')
+
+    actor_score = accuracy(act, 'training', theta)
+    logger.info(actor_score)
+    actor_score = accuracy(act, 'test', theta)
+    logger.info(actor_score)
+    actor_score = accuracy(act, 'validation', theta)
+    logger.info(actor_score)
+    
 # --------------------- helper functions --------------------- #
     
 def makedirs(dirs):
@@ -265,8 +303,11 @@ def grad_descent(f, df, x, y, init_t, alpha):
         if iter % 2000 == 0:
             
             logger.debug("Iteration {}".format(iter))
-            logger.debug("x = ({:.2f}, {:.2f}, {:.2f}, ...,) f(x)={:.2f})".format(
-                t[0], t[1], t[2], f(x, y, t)))
+            if not args.part == 7:
+                logger.debug("x = ({:.2f}, {:.2f}, {:.2f}, ...,) f(x)={:.2f})".format(
+                    t[0], t[1], t[2], f(x, y, t)))
+            else:
+                logger.debug("f(x)={:.2f}".format(f(x, y, t)))
             logger.debug("Gradient: {} \n".format(df(x, y, t)))
         iter += 1
     return (t,f(x, y, t))        
@@ -297,6 +338,10 @@ def dfv(x, y, theta):
 def h(x, opt_theta):
     """dot product of x, optimal theta"""
     return np.dot(x, opt_theta)
+    
+def hv(x, opt_theta):
+    """one-hot encoding version of h"""
+    return np.dot(opt_theta.T, x)
 
 def accuracy(actor_list, dataset, opt_theta, size=10, female_list=[], male_list=[]):
     """test accuracy of theta on the validation and test set"""
@@ -307,6 +352,9 @@ def accuracy(actor_list, dataset, opt_theta, size=10, female_list=[], male_list=
     # for gender classification (part 5)
     male_score = 0
     female_score = 0
+    
+    # for one-hot classification (part 7)
+    score = 0
     
     for actor in actor_list:
         if not os.path.exists(os.path.join('dataset', dataset)):
@@ -328,10 +376,9 @@ def accuracy(actor_list, dataset, opt_theta, size=10, female_list=[], male_list=
             # add the bias
             im = np.hstack((1, im))
             
-            h_ = h(im, opt_theta)
-            
             # if part 3, do actor classification
             if args.part == 3:
+                h_ = h(im, opt_theta)
                 if h_ >= 0.5 and (actor == 'hader'):
                     actor_score['hader'] += 1
                 elif h_ < 0.5 and (actor == 'carell'):
@@ -339,15 +386,36 @@ def accuracy(actor_list, dataset, opt_theta, size=10, female_list=[], male_list=
                     
             # if part 5, do gender classification
             elif args.part == 5:
+                h_ = h(im, opt_theta)
                 if h_ >= 0.5 and (actor in female_list):
                     female_score += 1
                 elif h_ < 0.5 and (actor in male_list):
                     male_score += 1
-    
+                    
+            # if part 7, do one-hot encoding classification
+            elif args.part == 7:
+                h_ = hv(im, opt_theta)
+                max_index = np.argmax(h_)
+                
+                if (max_index == 0) and actor == "drescher":
+                    score += 1
+                elif (max_index == 1) and actor == "ferrera":
+                    score += 1
+                elif (max_index == 2) and actor ==  "chenoweth":
+                    score += 1
+                elif (max_index == 3) and actor ==  "baldwin":
+                    score += 1
+                elif (max_index == 4) and actor == "hader":
+                    score += 1
+                elif (max_index == 5) and actor ==  "carell":
+                    score += 1
+                
     if args.part == 3:            
         return actor_score
     elif args.part == 5:
         return float(male_score + female_score) / (size * len(actor_list))
+    elif args.part == 7:
+        return float(score) / (size * len(actor_list))
         
 def optimal_params(act, x, y):
     """find optimal parameters"""

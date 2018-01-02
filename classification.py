@@ -126,6 +126,10 @@ def main():
     if args.part == 6:
         logger.info("Beginning Part 6 -- Finite difference verification")
         verification()
+        
+    if args.part == 7:
+        logger.info("Beginning Part 7 -- Multiple actor classification using one-hot")
+        one_hot_classification()
                 
         
 if __name__ == '__main__':
