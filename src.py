@@ -8,6 +8,7 @@ import numpy as np
 from classification import *
 import pickle
 from pylab import imshow, show
+import matplotlib.pyplot as plt
 
 logger = logging.getLogger(__name__)
 
@@ -146,39 +147,85 @@ def visualize(theta):
     
 # part 5 
 
-def gender_classification(act):
+def gender_classification(training_act, test_act):
     
     # vary training size
     max_size = 70
-    training_size = [10 * x for x in range(1, max_size + 1)]
+    training_size = [10 * x for x in range(1, max_size / 10 + 1)]
     
     theta_dict = {}
     validation_dict = {}
-    test_dict = {}
+    training_dict = {}
     
-    make_dataset(act, training_size=70, validation_size=10, test_size=10)
+    make_dataset(training_act + test_act, training_size=70, validation_size=10, test_size=10)
     
-    act = [name.split()[1].lower() for name in act]
+    training_act = [name.split()[1].lower() for name in training_act]
+    test_act = [name.split()[1].lower() for name in test_act]
+    
     # train the classifier
     for size in training_size:
         logger.info("Gender classification with training size {}".format(size))
-        theta = make_classifier(act, 'part5', training_size=size)
+        theta = make_classifier(training_act, 'part5', training_size=size)
         theta_dict[size] = theta
         
     # test the classifier
-    for size, theta in theta_dict:
-        validation_score = accuracy(act, 'validation', theta)
-        test_score = accuracy(act, 'test', theta)
+    for size, theta in theta_dict.iteritems():
         
+        # test on different actors
+        male_list = ['butler', 'radcliffe', 'vartan'] 
+        female_list = ['bracco', 'gilpin', 'harmon']
+        
+        validation_score = accuracy(test_act, 'validation', theta, 10, female_list, male_list)
         validation_dict[size] = validation_score
-        test_dict[size] = test_score
         
-    file = open(r'part5.pkl', 'ab')
-    pickle.dump(size, file)
-    pickle.dump(validation_dict, file)
-    pickle.dump(test_dict, file)
-    file.close()
+        # test on same actors
+        male_list = ['baldwin', 'hader', 'carell']
+        female_list = ['drescher', 'ferrera', 'chenoweth']
+        
+        training_score = accuracy(training_act, 'validation', theta, 10, female_list, male_list)
+        training_dict[size] = training_score
+            
+    # plot
     
+    # sort the dictionary by key (e.g 10, 20) and return as list of tuples
+    validation_dict = sorted(validation_dict.items())
+    training_dict = sorted(training_dict.items())
+    
+    # unpack list of tuples into two tuples
+    size, validation_score = zip(*validation_dict)
+    size, training_score = zip(*training_dict)
+    
+    plt.plot(size, validation_score, label = 'Validation Score')
+    plt.plot(size, training_score, label = 'Training Score')
+    
+    plt.xlabel('Training Set Size')
+    plt.ylabel('Score (%)')
+    plt.title('Performance vs. Size')
+    plt.legend(['Validation Score', 'Training Score'], loc=7)
+    plt.savefig("PerformanceVsSize.png")
+    plt.show()
+    
+# part 6 
+def verification():
+    """sanity check of dfv using finite differences"""
+
+    # create random x and y matrices
+    random.seed(0)
+    y = np.reshape(np.random.rand(4 * 200), (4, 200))
+    x = np.reshape(np.random.rand(1024 * 200), (1024, 200))
+    theta = np.reshape(np.random.random(1025 * 4), (1025, 4))
+    
+    # initialize finite difference
+    h = 1e-9
+    
+    for i, j in [(0,0), (0,1), (1,0), (1,1)]:
+        dtheta = np.zeros((1025, 4))
+        dtheta[i,j] = h
+        logger.info("Finite difference for coordinate ({},{})".format(i, j))
+        logger.info((fv(x, y, theta + dtheta) - fv(x, y, theta - dtheta)) / (2 * h))
+        logger.info(dfv(x, y, theta))
+        logger.info("---------------------------------------------")
+        
 # --------------------- helper functions --------------------- #
     
 def makedirs(dirs):
@@ -208,7 +255,7 @@ def get_range(actor, directory):
 def grad_descent(f, df, x, y, init_t, alpha):
     logger.info("Beginning Gradient Descent")
     EPS = 1e-10   
-    prev_t = init_t-10*EPS
+    prev_t = init_t-10 * EPS
     t = init_t.copy()
     max_iter = 40000
     iter  = 0
@@ -227,20 +274,39 @@ def grad_descent(f, df, x, y, init_t, alpha):
 def f(x, y, theta):
     """cost function"""
     x = np.vstack((np.ones((1, x.shape[1])), x))
-    return np.sum((y - np.dot(theta.T,x)) ** 2)
+    return np.sum((y - np.dot(theta.T, x)) ** 2)
 
 def df(x, y, theta):
     """derivative of cost function used in gradient descent"""
     x = np.vstack((np.ones((1, x.shape[1])), x))
-    return -2 * np.sum((y - np.dot(theta.T, x)) * x, 1)  
+    return -2 * np.sum((y - np.dot(theta.T, x)) * x, 1) 
+    
+def fv(x, y, theta):
+    """cost function for one-hot encoding
+       minimize the squared error of each label dimension
+       theta is N by K
+    """
+    x = np.vstack((np.ones((1, x.shape[1])), x))
+    return np.sum(np.sum((y - np.dot(theta.T, x)) ** 2, 0))
+    
+def dfv(x, y, theta):
+    """derivation of cost function for one-hot encoding"""
+    x = np.vstack((np.ones((1, x.shape[1])), x))
+    return -2 * np.dot(x,(y - np.dot(theta.T, x)).T)
 
 def h(x, opt_theta):
     """dot product of x, optimal theta"""
     return np.dot(x, opt_theta)
 
-def accuracy(actor_list, dataset, opt_theta, size=10):
+def accuracy(actor_list, dataset, opt_theta, size=10, female_list=[], male_list=[]):
     """test accuracy of theta on the validation and test set"""
+    
+    # for actor classification (part 3)
     actor_score = {actor: 0 for actor in actor_list}
+    
+    # for gender classification (part 5)
+    male_score = 0
+    female_score = 0
     
     for actor in actor_list:
         if not os.path.exists(os.path.join('dataset', dataset)):
@@ -264,12 +330,24 @@ def accuracy(actor_list, dataset, opt_theta, size=10):
             
             h_ = h(im, opt_theta)
             
-            if h_ >= 0.5 and (actor == 'hader'):
-                actor_score['hader'] += 1
-            elif h_ < 0.5 and (actor == 'carell'):
-                actor_score['carell'] += 1
+            # if part 3, do actor classification
+            if args.part == 3:
+                if h_ >= 0.5 and (actor == 'hader'):
+                    actor_score['hader'] += 1
+                elif h_ < 0.5 and (actor == 'carell'):
+                    actor_score['carell'] += 1
+                    
+            # if part 5, do gender classification
+            elif args.part == 5:
+                if h_ >= 0.5 and (actor in female_list):
+                    female_score += 1
+                elif h_ < 0.5 and (actor in male_list):
+                    male_score += 1
     
-    return actor_score
+    if args.part == 3:            
+        return actor_score
+    elif args.part == 5:
+        return float(male_score + female_score) / (size * len(actor_list))
         
 def optimal_params(act, x, y):
     """find optimal parameters"""

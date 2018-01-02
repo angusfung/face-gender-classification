@@ -117,7 +117,15 @@ def main():
             'Fran Drescher', 'America Ferrera', 'Kristin Chenoweth',
             'Alec Baldwin', 'Bill Hader', 'Steve Carell',
             ]
-        gender_classification(training_act)
+        test_act = [
+            'Gerard Butler', 'Daniel Radcliffe', 'Michael Vartan',
+            'Lorraine Bracco', 'Peri Gilpin', 'Angie Harmon',
+            ]
+        gender_classification(training_act, test_act)
+        
+    if args.part == 6:
+        logger.info("Beginning Part 6 -- Finite difference verification")
+        verification()
                 
         
 if __name__ == '__main__':
