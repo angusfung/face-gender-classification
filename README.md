@@ -4,7 +4,7 @@ This is a an adaption of faces.py using the PEP8 coding style.
 
 ## Download
 
-You must download the dataset before running any parts of the code. 
+You must download the dataset before running any parts of the code. Rewrite this and describe the project better.
 
 ```
 ./classification.py --download --log INFO 
