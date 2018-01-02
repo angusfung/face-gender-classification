@@ -33,8 +33,11 @@ The classifier is then used to classfy 10 images of hader and carell, and the re
 ```
 This visualizes the optimized theta by loading the saved theta value from part 3, for both the full training set and a two-image training set.
 
-
-
+### Gender classification
+```
+./classification.py --part 5 --log INFO
+```
+Trains the classifier on images of `6` actors / actresses and then tests the performance on `10` images of `6` different actors / actresses. The size of the training size is varied from `10` to `70` and the performance is plotted. 
 
 
 
