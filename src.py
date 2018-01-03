@@ -7,7 +7,7 @@ from scipy.misc import imread
 import numpy as np
 from classification import *
 import pickle
-from pylab import imshow, show
+from pylab import imshow, show, figure, subplot
 import matplotlib.pyplot as plt
 
 logger = logging.getLogger(__name__)
@@ -162,14 +162,40 @@ def make_classifier(
     
     return theta
 
-# part 4
+# part 4 and part 8
 
 def visualize(theta):
     """visualize theta"""
-    # ignore the bias term
-    im = np.reshape(theta[1:], (32, 32))
-    imshow(im)
-    show()
+    
+    if args.part == 4:
+        # ignore the bias term
+        im = np.reshape(theta[1:], (32, 32))
+        imshow(im)
+        show()
+    elif args.part ==8:
+        # ignore the bias term
+        im1 = np.reshape(theta[1:,0], (32,32))
+        im2 = np.reshape(theta[1:,1], (32,32))
+        im3 = np.reshape(theta[1:,2], (32,32))
+        im4 = np.reshape(theta[1:,3], (32,32))
+        im5 = np.reshape(theta[1:,4], (32,32))
+        im6 = np.reshape(theta[1:,5], (32,32))
+        
+        figure()
+        subplot(431)
+        imshow(im1)
+        subplot(432)
+        imshow(im2)
+        subplot(433)
+        imshow(im3)
+        subplot(434)
+        imshow(im4)
+        subplot(435)
+        imshow(im5)
+        subplot(436)
+        imshow(im6)
+        subplot(437)
+        show()
     
 # part 5 
 

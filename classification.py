@@ -130,8 +130,15 @@ def main():
     if args.part == 7:
         logger.info("Beginning Part 7 -- Multiple actor classification using one-hot")
         one_hot_classification()
-                
         
+    if args.part == 8:
+        logger.info("""
+        Beginning Part 8 -- Visualizing each dimension of theta from multiple actor classification
+        """)
+        with open(r'part7.pkl', 'rb') as f:
+            theta = pickle.load(f)
+        visualize(theta)
+                        
 if __name__ == '__main__':
     # set root logger
     root = logging.getLogger()
