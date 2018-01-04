@@ -1,0 +1,150 @@
+src - INFO: Gradient descent using alpha 1e-07 and theta -0.1
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-07 and theta -0.08
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-07 and theta -0.06
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-07 and theta -0.04
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-07 and theta -0.02
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-07 and theta 0.0
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-07 and theta 0.02
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-07 and theta 0.04
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-07 and theta 0.06
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-07 and theta 0.08
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-08 and theta -0.1
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-08 and theta -0.08
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-08 and theta -0.06
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-08 and theta -0.04
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-08 and theta -0.02
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-08 and theta 0.0
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-08 and theta 0.02
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-08 and theta 0.04
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-08 and theta 0.06
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-08 and theta 0.08
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-09 and theta -0.1
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-09 and theta -0.08
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-09 and theta -0.06
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-09 and theta -0.04
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-09 and theta -0.02
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-09 and theta 0.0
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-09 and theta 0.02
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-09 and theta 0.04
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-09 and theta 0.06
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-09 and theta 0.08
+src - INFO: Validation Score: {'carell': 0, 'hader': 0}
+src - INFO: Test Score: {'carell': 0, 'hader': 0}
+src - INFO: Gradient descent using alpha 1e-10 and theta -0.1
+src - INFO: Validation Score: {'carell': 7, 'hader': 5}
+src - INFO: Test Score: {'carell': 3, 'hader': 6}
+src - INFO: Gradient descent using alpha 1e-10 and theta -0.08
+src - INFO: Validation Score: {'carell': 7, 'hader': 5}
+src - INFO: Test Score: {'carell': 3, 'hader': 6}
+src - INFO: Gradient descent using alpha 1e-10 and theta -0.06
+src - INFO: Validation Score: {'carell': 7, 'hader': 5}
+src - INFO: Test Score: {'carell': 3, 'hader': 6}
+src - INFO: Gradient descent using alpha 1e-10 and theta -0.04
+src - INFO: Validation Score: {'carell': 7, 'hader': 5}
+src - INFO: Test Score: {'carell': 4, 'hader': 6}
+src - INFO: Gradient descent using alpha 1e-10 and theta -0.02
+src - INFO: Validation Score: {'carell': 7, 'hader': 5}
+src - INFO: Test Score: {'carell': 6, 'hader': 6}
+src - INFO: Gradient descent using alpha 1e-10 and theta 0.0
+src - INFO: Validation Score: {'carell': 9, 'hader': 8}
+src - INFO: Test Score: {'carell': 8, 'hader': 10}
+src - INFO: Gradient descent using alpha 1e-10 and theta 0.02
+src - INFO: Validation Score: {'carell': 5, 'hader': 9}
+src - INFO: Test Score: {'carell': 8, 'hader': 7}
+src - INFO: Gradient descent using alpha 1e-10 and theta 0.04
+src - INFO: Validation Score: {'carell': 5, 'hader': 9}
+src - INFO: Test Score: {'carell': 7, 'hader': 5}
+src - INFO: Gradient descent using alpha 1e-10 and theta 0.06
+src - INFO: Validation Score: {'carell': 4, 'hader': 7}
+src - INFO: Test Score: {'carell': 7, 'hader': 5}
+src - INFO: Gradient descent using alpha 1e-10 and theta 0.08
+src - INFO: Validation Score: {'carell': 4, 'hader': 6}
+src - INFO: Test Score: {'carell': 7, 'hader': 5}
+src - INFO: Gradient descent using alpha 1e-11 and theta -0.1
+src - INFO: Validation Score: {'carell': 7, 'hader': 5}
+src - INFO: Test Score: {'carell': 4, 'hader': 6}
+src - INFO: Gradient descent using alpha 1e-11 and theta -0.08
+src - INFO: Validation Score: {'carell': 7, 'hader': 5}
+src - INFO: Test Score: {'carell': 4, 'hader': 6}
+src - INFO: Gradient descent using alpha 1e-11 and theta -0.06
+src - INFO: Validation Score: {'carell': 7, 'hader': 6}
+src - INFO: Test Score: {'carell': 4, 'hader': 6}
+src - INFO: Gradient descent using alpha 1e-11 and theta -0.04
+src - INFO: Validation Score: {'carell': 7, 'hader': 6}
+src - INFO: Test Score: {'carell': 4, 'hader': 7}
+src - INFO: Gradient descent using alpha 1e-11 and theta -0.02
+src - INFO: Validation Score: {'carell': 8, 'hader': 6}
+src - INFO: Test Score: {'carell': 4, 'hader': 7}
+src - INFO: Gradient descent using alpha 1e-11 and theta 0.0
+src - INFO: Validation Score: {'carell': 10, 'hader': 8}
+src - INFO: Test Score: {'carell': 9, 'hader': 10}
+src - INFO: Gradient descent using alpha 1e-11 and theta 0.02
+src - INFO: Validation Score: {'carell': 5, 'hader': 6}
+src - INFO: Test Score: {'carell': 6, 'hader': 5}
+src - INFO: Gradient descent using alpha 1e-11 and theta 0.04
+src - INFO: Validation Score: {'carell': 4, 'hader': 6}
+src - INFO: Test Score: {'carell': 6, 'hader': 4}
+src - INFO: Gradient descent using alpha 1e-11 and theta 0.06
+src - INFO: Validation Score: {'carell': 4, 'hader': 6}
+src - INFO: Test Score: {'carell': 6, 'hader': 4}
+src - INFO: Gradient descent using alpha 1e-11 and theta 0.08
+src - INFO: Validation Score: {'carell': 4, 'hader': 6}
+src - INFO: Test Score: {'carell': 6, 'hader': 4}
