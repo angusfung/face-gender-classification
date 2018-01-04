@@ -283,7 +283,7 @@ def one_hot_classification():
     theta = make_classifier(act, 'part7')
         
     # save the theta value
-    file = open(r'part{}.pkl'.format(args.part), 'ab')
+    file = open(r'pkl/part{}.pkl'.format(args.part), 'ab')
     pickle.dump(theta, file)
     file.close()
     

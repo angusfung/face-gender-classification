@@ -99,10 +99,10 @@ def main():
         logger.info("Visualize theta with full training set")
         
         # load the saved theta
-        if not os.path.isfile('part3.pkl'):
+        if not os.path.isfile('pkl/part3.pkl'):
             raise ValueError("You must run part 3 first")
             
-        with open(r'part3.pkl', 'rb') as f:
+        with open(r'pkl/part3.pkl', 'rb') as f:
             theta = pickle.load(f)
         visualize(theta)
         
@@ -135,7 +135,7 @@ def main():
         logger.info("""
         Beginning Part 8 -- Visualizing each dimension of theta from multiple actor classification
         """)
-        with open(r'part7.pkl', 'rb') as f:
+        with open(r'pkl/part7.pkl', 'rb') as f:
             theta = pickle.load(f)
         visualize(theta)
                         
