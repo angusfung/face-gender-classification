@@ -1,6 +1,6 @@
 # classification
 
-This is a an adaption of faces.py using the PEP8 coding style.  Rewrite this and describe the project better.
+Facial and gender classification of actors and actresses from the FaceScrub database, with linear regression models written from scratch.
 
 ## Download
 
