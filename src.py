@@ -7,7 +7,7 @@ from scipy.misc import imread
 import numpy as np
 from classification import *
 import pickle
-from pylab import imshow, show, figure, subplot
+from pylab import imshow, show, figure, subplot, title
 import matplotlib.pyplot as plt
 
 logger = logging.getLogger(__name__)
@@ -182,19 +182,18 @@ def visualize(theta):
         im6 = np.reshape(theta[1:,5], (32,32))
         
         figure()
-        subplot(431)
+        subplot(331)
         imshow(im1)
-        subplot(432)
+        subplot(332)
         imshow(im2)
-        subplot(433)
+        subplot(333)
         imshow(im3)
-        subplot(434)
+        subplot(334)
         imshow(im4)
-        subplot(435)
+        subplot(335)
         imshow(im5)
-        subplot(436)
+        subplot(336)
         imshow(im6)
-        subplot(437)
         show()
     
 # part 5 
