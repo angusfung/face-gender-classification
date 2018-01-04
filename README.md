@@ -1,6 +1,6 @@
 # classification
 
-Facial and gender classification of actors and actresses from the FaceScrub database, with linear regression models written from scratch.
+Facial and gender classification of actors and actresses from the FaceScrub database, with linear regression models written from scratch. Please see `faces.pdf` for the report. 
 
 ## Download
 
@@ -37,13 +37,20 @@ This visualizes the optimized theta by loading the saved theta value from part 3
 ```
 ./classification.py --part 5 --log INFO
 ```
-Trains the classifier on images of `6` actors / actresses and then tests the performance on `10` images of `6` different actors / actresses. The size of the training size is varied from `10` to `70` and the performance is plotted.
+Trains the classifier on images of `6` actors / actresses (`100` each) and then tests the performance on images of `6` different actors / actresses (`10` each). The size of the training size is varied from `10` to `70` and the performance is plotted.
 
 ### Multi-actor classification using One Hot Encoding
 ```
 ./classification.py --part 7 --log INFO
 ```
-Trains the classifier on images of `6` actors / actresses and then attempts to classify them on the validation and test set.
+Trains the classifier on images of `6` actors / actresses (`70` each), each of which are represented by one state of the one-hot-encoder. The performance is tested on `10` images of each respective actor.
+
+### Visualizing one-hot theta
+```
+./classification.py --part 8 --log INFO
+```
+This reproduces images of each dimension of `theta` from above, representing each state of the one-hot-encoder.
+
 
 
 
